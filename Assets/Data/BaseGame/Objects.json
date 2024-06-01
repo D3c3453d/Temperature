@@ -1,0 +1,191 @@
+{
+    "Torch":
+    {
+        "deviceType": "heating",
+        "coreTemp": 35.0,
+        "effectiveRange": 1
+    },
+    "Brick Fireplace":
+    {
+        "deviceType": "heating",
+        "coreTemp": 60.0,
+        "effectiveRange": 4,
+        "needActive": true
+    },
+    "Elegant Fireplace":
+    {
+        "deviceType": "heating",
+        "coreTemp": 60.0,
+        "effectiveRange": 4,
+        "needActive": true
+    },
+    "Iridium Fireplace":
+    {
+        "deviceType": "heating",
+        "coreTemp": 60.0,
+        "effectiveRange": 4,
+        "needActive": true
+    },
+    "Stone Fireplace":
+    {
+        "deviceType": "heating",
+        "coreTemp": 60.0,
+        "effectiveRange": 4,
+        "needActive": true
+    },
+    "Monster Fireplace":
+    {
+        "deviceType": "heating",
+        "coreTemp": 60.0,
+        "effectiveRange": 4,
+        "needActive": true
+    },
+    "Stove Fireplace":
+    {
+        "deviceType": "heating",
+        "coreTemp": 60.0,
+        "effectiveRange": 4,
+        "needActive": true
+    },
+    "Fan":
+    {
+        "deviceType": "cooling",
+        "coreTemp": 25.0,
+        "effectiveRange": 3,
+        "needActive": true,
+        "activeType": 1
+    },
+    "Furnace":
+    {
+        "deviceType": "heating",
+        "coreTemp": 60.0,
+        "effectiveRange": 4,
+        "needActive": true,
+        "activeType": 1
+    },
+    "Passive Cooler":
+    {
+        "deviceType": "cooling",
+        "coreTemp": 20.0,
+        "effectiveRange": 3,
+        "needActive": true,
+        "activeType": 1,
+        "ambientCoefficient": 0.75
+    },
+    "Air Cooler":
+    {
+        "deviceType": "cooling",
+        "coreTemp": 18.0,
+        "effectiveRange": 4,
+        "needActive": true,
+        "activeType": 1,
+        "ambientCoefficient": 1.25
+    },
+    "Charcoal Kiln":
+    {
+        "deviceType": "heating",
+        "coreTemp": 60.0,
+        "effectiveRange": 3,
+        "needActive": true,
+        "activeType": 1
+    },
+    "Campfire":
+    {
+        "deviceType": "heating",
+        "coreTemp": 50.0,
+        "effectiveRange": 2,
+        "needActive": true
+    },
+    "Wooden Brazier":
+    {
+        "deviceType": "heating",
+        "coreTemp": 50.0,
+        "effectiveRange": 2,
+        "needActive": true
+    },
+    "Stone Brazier":
+    {
+        "deviceType": "heating",
+        "coreTemp": 50.0,
+        "effectiveRange": 2,
+        "needActive": true
+    },
+    "Gold Brazier":
+    {
+        "deviceType": "heating",
+        "coreTemp": 50.0,
+        "effectiveRange": 2,
+        "needActive": true
+    },
+    "Stump Brazier":
+    {
+        "deviceType": "heating",
+        "coreTemp": 50.0,
+        "effectiveRange": 2,
+        "needActive": true
+    },
+    "Barrel Brazier":
+    {
+        "deviceType": "heating",
+        "coreTemp": 50.0,
+        "effectiveRange": 2,
+        "needActive": true
+    },
+    "Skull Brazier":
+    {
+        "deviceType": "heating",
+        "coreTemp": 50.0,
+        "effectiveRange": 2,
+        "needActive": true
+    },
+    "Marble Brazier":
+    {
+        "deviceType": "heating",
+        "coreTemp": 50.0,
+        "effectiveRange": 2,
+        "needActive": true
+    },
+    "Carved Brazier":
+    {
+        "deviceType": "heating",
+        "coreTemp": 50.0,
+        "effectiveRange": 2,
+        "needActive": true
+    },
+    "Heater":
+    {
+        "deviceType": "heating",
+        "coreTemp": 60.0,
+        "effectiveRange": 4,
+        "needActive": true
+    },
+    "Portable Heater":
+    {
+        "deviceType": "heating",
+        "coreTemp": 60.0,
+        "effectiveRange": 6,
+        "needActive": true,
+        "activeType": 1,
+        "ambientCoefficient": 1.25
+    },
+    "Air Conditioner":
+    {
+        "deviceType": "general",
+        "coreTemp": 25.0,
+        "effectiveRange": 4,
+        "needActive": true,
+        "activeType": 1,
+        "operationalRange": 15,
+        "ambientCoefficient": 2
+    },
+    "Tall Air Conditioner":
+    {
+        "deviceType": "general",
+        "coreTemp": 25.0,
+        "effectiveRange": 7,
+        "needActive": true,
+        "activeType": 1,
+        "operationalRange": 20,
+        "ambientCoefficient": 4
+    }
+}

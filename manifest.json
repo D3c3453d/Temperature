@@ -1,0 +1,16 @@
+{
+    "Name": "Temperature",
+    "Author": "D3c3453d",
+    "Version": "0.0.1",
+    "Description": "Adds temperature to the game.",
+    "UniqueID": "D3c3453d.Temperature",
+    "EntryDll": "Temperature.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [],
+    "Dependencies": [
+        {
+          "UniqueID": "Kana.WeatherWonders",
+          "IsRequired": false
+        }
+    ]
+}

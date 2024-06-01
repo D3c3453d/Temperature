@@ -1,0 +1,135 @@
+{
+    "Beach":
+    {
+      "tempModifierMultiplicative": 0.75,
+      "tempModifierTimeDependentScale": 2.0
+    },
+    "Mountain":
+    {
+      "tempModifierAdditive": -4.0,
+      "tempModifierTimeDependentScale": 2.0
+    },
+    "Desert":
+    {
+      "tempModifierFixedValue": 37,
+      "tempModifierTimeDependentScale": 6.5
+    },
+    "Backwoods":
+    {
+      "tempModifierMultiplicative": 0.85
+    },
+    "Summit":
+    {
+      "tempModifierFixedValue": 25,
+      "tempModifierTimeDependentScale": 2
+    },
+    "BathHouse_Pool":
+    {
+      "tempModifierFixedValue": 30,
+      "tempModifierTimeDependentScale": 1,
+      "tempModifierFluctuationScale": 0.2
+    },
+    "Greenhouse":
+    {
+      "tempModifierFixedValue": 25,
+      "tempModifierTimeDependentScale": 1,
+      "tempModifierFluctuationScale": 0.2
+    },
+    "SkullCave":
+    {
+      "tempModifierFixedValue": 26
+    },
+    "Submarine":
+    {
+      "tempModifierFixedValue": 8,
+      "tempModifierTimeDependentScale": 1,
+      "tempModifierFluctuationScale": 0.2
+    },
+    "IslandSouth":
+    {
+      "tempModifierFixedValue": 28,
+      "tempModifierTimeDependentScale": 2.5
+    },
+    "IslandSouthEast":
+    {
+      "tempModifierFixedValue": 28,
+      "tempModifierTimeDependentScale": 3
+    },
+    "IslandEast":
+    {
+      "tempModifierFixedValue": 25,
+      "tempModifierTimeDependentScale": 2
+    },
+    "IslandNorth":
+    {
+      "tempModifierFixedValue": 29,
+      "tempModifierTimeDependentScale": 3
+    },
+    "IslandWest":
+    {
+      "tempModifierFixedValue": 28,
+      "tempModifierTimeDependentScale": 3
+    },
+    "IslandFieldOffice":
+    {
+      "tempModifierFixedValue": 28,
+      "tempModifierTimeDependentScale": 3
+    },
+    "IslandFarmHouse":
+    {
+      "tempModifierFixedValue": 28,
+      "tempModifierTimeDependentScale": 3
+    },
+    "CaptainRoom":
+    {
+      "tempModifierFixedValue": 28,
+      "tempModifierTimeDependentScale": 3
+    },
+    "IslandShrine":
+    {
+      "tempModifierFixedValue": 28,
+      "tempModifierTimeDependentScale": 3
+    },
+    "IslandHut":
+    {
+      "tempModifierFixedValue": 28,
+      "tempModifierTimeDependentScale": 3
+    },
+    "IslandFarmCave":
+    {
+      "tempModifierFixedValue": 25,
+      "tempModifierTimeDependentScale": 2
+    },
+    "IslandSouthEastCave":
+    {
+      "tempModifierFixedValue": 25,
+      "tempModifierTimeDependentScale": 2
+    },
+    "IslandWestCave1":
+    {
+      "tempModifierFixedValue": 25,
+      "tempModifierTimeDependentScale": 2
+    },
+    "IslandNorthCave1":
+    {
+      "tempModifierFixedValue": 35,
+      "tempModifierTimeDependentScale": 1,
+      "tempModifierFluctuationScale": 4
+    },
+    "Caldera":
+    {
+      "tempModifierFixedValue": 45,
+      "tempModifierTimeDependentScale": 1,
+      "tempModifierFluctuationScale": 16
+    },
+    "LeoTreeHouse":
+    {
+      "tempModifierFixedValue": 28,
+      "tempModifierTimeDependentScale": 3
+    },
+    "QiNutRoom":
+    {
+      "tempModifierFixedValue": 28,
+      "tempModifierTimeDependentScale": 3
+    }
+}
