@@ -2,9 +2,8 @@ using StardewValley;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using Temperature.Framework.APIs;
-using Temperature.Framework.Moduls;
-using Temperature.Framework.Common;
-using Temperature.Framework.Databases;
+using Temperature.Framework.Controllers;
+using Temperature.Framework.Data;
 using Temperature.Framework.Misc;
 
 namespace Temperature
@@ -13,7 +12,7 @@ namespace Temperature
     {
         public static ModEntry Instance { get; private set; }
 
-        public static Data Data { get; set; }
+        public static PlayerData Data { get; set; }
 
         public static Config Config { get; private set; }
 
@@ -36,7 +35,7 @@ namespace Temperature
 
             helper.Events.GameLoop.ReturnedToTitle += OnReturnToTitle;
 
-            DbController.LoadData();
+            DataController.LoadData();
         }
 
         private void OnGameLaunch(object sender, GameLaunchedEventArgs e)

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using Temperature.Framework.Common;
+using Temperature.Framework.Misc;
 
-namespace Temperature.Framework.Databases
+namespace Temperature.Framework.Data
 {
-    public class GenericDb<T>
+    public class GenericData<T>
     {
         public Dictionary<string, T> Data { get; set; } = new();
 
@@ -25,9 +25,9 @@ namespace Temperature.Framework.Databases
             catch (System.ArgumentException exception)
             {
 
-                Debugger.Log($"({db.Key}) — Duplicate Entry!", "Trace");
-                Debugger.Log(exception.Message, "Trace");
-                Debugger.Log(exception.StackTrace, "Trace");
+                LogHelper.Trace($"({db.Key}) — Duplicate Entry!");
+                LogHelper.Trace(exception.Message);
+                LogHelper.Trace(exception.StackTrace);
             }
         }
 

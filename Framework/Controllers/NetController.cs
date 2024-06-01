@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using Temperature.Framework.Common;
-using Temperature.Framework.Databases;
+using Temperature.Framework.Misc;
+using Temperature.Framework.Data;
 
 
-namespace Temperature.Framework.Misc
+namespace Temperature.Framework.Controllers
 {
     public class NetController
     {
@@ -20,17 +20,17 @@ namespace Temperature.Framework.Misc
         {
             if (Context.IsMainPlayer)
             {
-                Data _data = Helper.Data.ReadSaveData<Data>($"{player_id}") ?? new Data();
+                PlayerData _data = Helper.Data.ReadSaveData<PlayerData>($"{player_id}") ?? new PlayerData();
                 SyncBody _toSend = new SyncBody(_data,
-                    DbController.Seasons.Data,
-                    DbController.Weather.Data,
-                    DbController.Locations.Data,
-                    DbController.Clothes.Data,
-                    DbController.Objects.Data);
+                    DataController.Seasons.Data,
+                    DataController.Weather.Data,
+                    DataController.Locations.Data,
+                    DataController.Clothes.Data,
+                    DataController.Objects.Data);
 
                 Helper.Data.WriteSaveData($"{player_id}", _data);
 
-                Debugger.Log($"Sending important Data to farmhand {player_id}.", "Trace");
+                LogHelper.Trace($"Sending important Data to farmhand {player_id}.");
                 Helper.Multiplayer.SendMessage(
                     message: _toSend,
                     messageType: "SaveDataFromHost",
@@ -44,20 +44,20 @@ namespace Temperature.Framework.Misc
         {
             if (Context.IsMainPlayer)
             {
-                Debugger.Log($"Sending important Data to all farmhands.", "Trace");
+                LogHelper.Trace($"Sending important Data to all farmhands.");
                 foreach (Farmer farmer in Game1.getOnlineFarmers())
                 {
-                    Data _data = Helper.Data.ReadSaveData<Data>($"{farmer.UniqueMultiplayerID}") ?? new Data();
+                    PlayerData _data = Helper.Data.ReadSaveData<PlayerData>($"{farmer.UniqueMultiplayerID}") ?? new PlayerData();
                     SyncBody _toSend = new SyncBody(_data,
-                        DbController.Seasons.Data,
-                        DbController.Weather.Data,
-                        DbController.Locations.Data,
-                        DbController.Clothes.Data,
-                        DbController.Objects.Data);
+                        DataController.Seasons.Data,
+                        DataController.Weather.Data,
+                        DataController.Locations.Data,
+                        DataController.Clothes.Data,
+                        DataController.Objects.Data);
 
                     Helper.Data.WriteSaveData($"{farmer.UniqueMultiplayerID}", _data);
 
-                    Debugger.Log($"Sending important Data to farmhand {farmer.UniqueMultiplayerID}.", "Trace");
+                    LogHelper.Trace($"Sending important Data to farmhand {farmer.UniqueMultiplayerID}.");
                     Helper.Multiplayer.SendMessage(
                         message: _toSend,
                         messageType: "SaveDataFromHost",
@@ -72,9 +72,9 @@ namespace Temperature.Framework.Misc
         {
             if (Context.IsMainPlayer)
             {
-                if (Game1.IsMultiplayer) Debugger.Log($"Saving host Data.", "Trace");
+                if (Game1.IsMultiplayer) LogHelper.Trace($"Saving host Data.");
 
-                Data _data = Helper.Data.ReadSaveData<Data>($"{Game1.player.UniqueMultiplayerID}") ?? new Data();
+                PlayerData _data = Helper.Data.ReadSaveData<PlayerData>($"{Game1.player.UniqueMultiplayerID}") ?? new PlayerData();
                 if (!_firstLoad)
                 {
                     ModEntry.Data = _data;
@@ -84,7 +84,7 @@ namespace Temperature.Framework.Misc
             }
             else
             {
-                Debugger.Log($"Sending important Data to host.", "Trace");
+                LogHelper.Trace($"Sending important Data to host.");
 
                 Helper.Multiplayer.SendMessage(
                     message: ModEntry.Data,
@@ -101,19 +101,19 @@ namespace Temperature.Framework.Misc
             {
                 SyncBody _body = e.ReadAs<SyncBody>();
                 ModEntry.Data = _body.data;
-                DbController.Seasons.Data = _body.seasons;
-                DbController.Weather.Data = _body.weather;
-                DbController.Locations.Data = _body.locations;
-                DbController.Clothes.Data = _body.clothes;
-                DbController.Objects.Data = _body.objects;
+                DataController.Seasons.Data = _body.seasons;
+                DataController.Weather.Data = _body.weather;
+                DataController.Locations.Data = _body.locations;
+                DataController.Clothes.Data = _body.clothes;
+                DataController.Objects.Data = _body.objects;
 
-                Debugger.Log("Received important Data from host.", "Trace");
+                LogHelper.Trace("Received important Data from host.");
             }
 
             if (Context.IsMainPlayer && e.FromModID == Manifest.UniqueID && e.Type == "SaveDataToHost")
             {
-                Data _data = e.ReadAs<Data>();
-                Debugger.Log($"Received important Data from player {e.FromPlayerID}.", "Trace");
+                PlayerData _data = e.ReadAs<PlayerData>();
+                LogHelper.Trace($"Received important Data from player {e.FromPlayerID}.");
                 Helper.Data.WriteSaveData($"{e.FromPlayerID}", _data);
             }
         }
@@ -121,14 +121,14 @@ namespace Temperature.Framework.Misc
 
     public class SyncBody
     {
-        public Data data;
+        public PlayerData data;
         public Dictionary<string, EnvModifiers> seasons;
         public Dictionary<string, EnvModifiers> weather;
         public Dictionary<string, EnvModifiers> locations;
         public Dictionary<string, Dictionary<string, ClothModifiers>> clothes;
         public Dictionary<string, ObjectModifiers> objects;
 
-        public SyncBody(Data _data,
+        public SyncBody(PlayerData _data,
             Dictionary<string, EnvModifiers> _seasons,
             Dictionary<string, EnvModifiers> _weather,
             Dictionary<string, EnvModifiers> _locations,

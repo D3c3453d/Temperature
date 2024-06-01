@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using StardewValley;
-using Temperature.Framework.Databases;
+using Temperature.Framework.Data;
 using SObject = StardewValley.Object;
 
 
-namespace Temperature.Framework.Moduls
+namespace Temperature.Framework.Controllers
 {
     public static class EnvTempController
     {
@@ -46,7 +46,7 @@ namespace Temperature.Framework.Moduls
             // season temperature modifiers
 
             string season = location.GetSeason().ToString();
-            EnvModifiers seasonData = DbController.Seasons.Data.GetValueOrDefault(season) ?? new EnvModifiers();
+            EnvModifiers seasonData = DataController.Seasons.Data.GetValueOrDefault(season) ?? new EnvModifiers();
             ModEntry.Data.ActualEnvTemp *= seasonData.multiplicative;
         }
 
@@ -55,14 +55,14 @@ namespace Temperature.Framework.Moduls
             // weather temperature modifiers
 
             string weather = location.GetWeather().Weather;
-            EnvModifiers weatherData = DbController.Weather.Data.GetValueOrDefault(weather) ?? new EnvModifiers();
+            EnvModifiers weatherData = DataController.Weather.Data.GetValueOrDefault(weather) ?? new EnvModifiers();
             ModEntry.Data.ActualEnvTemp *= weatherData.multiplicative;
         }
 
         private static void applyLocation(GameLocation location)
         {
             // location temperature modifiers
-            var locationData = DbController.Locations.Data.GetValueOrDefault(location.Name) ?? new EnvModifiers();
+            var locationData = DataController.Locations.Data.GetValueOrDefault(location.Name) ?? new EnvModifiers();
             ModEntry.Data.ActualEnvTemp += locationData.additive;
             ModEntry.Data.ActualEnvTemp *= locationData.multiplicative;
             if (locationData.fixedValue > -273)
@@ -116,7 +116,7 @@ namespace Temperature.Framework.Moduls
 
                     if (obj != null && !nearbyObjects.Contains(obj)) // skip objects, that already calculated
                     {
-                        ObjectModifiers objectData = DbController.Objects.Data.GetValueOrDefault(obj.Name);
+                        ObjectModifiers objectData = DataController.Objects.Data.GetValueOrDefault(obj.Name);
                         if (objectData != null)
                         {
                             nearbyObjects.Add(obj);
@@ -152,7 +152,7 @@ namespace Temperature.Framework.Moduls
                 // objects
                 foreach (SObject obj in location.objects.Values)
                 {
-                    ObjectModifiers objectData = DbController.Objects.Data.GetValueOrDefault(obj.Name);
+                    ObjectModifiers objectData = DataController.Objects.Data.GetValueOrDefault(obj.Name);
                     if (objectData != null)
                         if (!objectData.needActive || checkIfItemIsActive(obj, objectData.activeType)) // skips inactive objects, that need to be activated
                             objectsData.Add(objectData);
@@ -161,7 +161,7 @@ namespace Temperature.Framework.Moduls
                 // furniture
                 foreach (SObject obj in location.furniture)
                 {
-                    ObjectModifiers objectData = DbController.Objects.Data.GetValueOrDefault(obj.Name);
+                    ObjectModifiers objectData = DataController.Objects.Data.GetValueOrDefault(obj.Name);
                     if (objectData != null)
                         if (!objectData.needActive || checkIfItemIsActive(obj, objectData.activeType)) // skips inactive objects, that need to be activated
                             objectsData.Add(objectData);
@@ -215,7 +215,7 @@ namespace Temperature.Framework.Moduls
 
             // fluctuation
             ModEntry.Data.ActualEnvTemp += fluctuation;
-            Common.Debugger.Log(ModEntry.Data.ActualEnvTemp.ToString(), "Warn");
+            Misc.LogHelper.Warn(ModEntry.Data.ActualEnvTemp.ToString());
         }
 
         public static void FluctuationUpdate()

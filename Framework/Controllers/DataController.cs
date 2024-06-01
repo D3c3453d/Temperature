@@ -1,18 +1,19 @@
 using StardewModdingAPI;
 using Temperature.Framework.Misc;
+using Temperature.Framework.Data;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Temperature.Framework.Databases
+namespace Temperature.Framework.Controllers
 {
-    static class DbController
+    static class DataController
     {
-        public static GenericDb<EnvModifiers> Seasons { get; set; } = new();
-        public static GenericDb<EnvModifiers> Weather { get; set; } = new();
-        public static GenericDb<EnvModifiers> Locations { get; set; } = new();
-        public static GenericDb<Dictionary<string, ClothModifiers>> Clothes { get; set; } = new();
-        public static GenericDb<ObjectModifiers> Objects { get; set; } = new();
+        public static GenericData<EnvModifiers> Seasons { get; set; } = new();
+        public static GenericData<EnvModifiers> Weather { get; set; } = new();
+        public static GenericData<EnvModifiers> Locations { get; set; } = new();
+        public static GenericData<Dictionary<string, ClothModifiers>> Clothes { get; set; } = new();
+        public static GenericData<ObjectModifiers> Objects { get; set; } = new();
         public static void LoadData()
         {
             // BaseGame data

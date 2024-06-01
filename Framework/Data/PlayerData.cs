@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
-namespace Temperature.Framework.Common
+namespace Temperature.Framework.Data
 {
-    public class Data
+    public class PlayerData
     {
         public float ActualEnvTemp { get; set; } = 23;
         public float ActualBodyTemp { get; set; } = 23;
