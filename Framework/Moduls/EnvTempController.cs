@@ -62,19 +62,16 @@ namespace Temperature.Framework.Moduls
         private static void applyLocation(GameLocation location)
         {
             // location temperature modifiers
-            var locationData = DbController.Locations.Data.GetValueOrDefault(location.Name);
-            if (locationData != null)
+            var locationData = DbController.Locations.Data.GetValueOrDefault(location.Name) ?? new EnvModifiers();
+            ModEntry.Data.ActualEnvTemp += locationData.additive;
+            ModEntry.Data.ActualEnvTemp *= locationData.multiplicative;
+            if (locationData.fixedValue > -273)
             {
-                ModEntry.Data.ActualEnvTemp += locationData.additive;
-                ModEntry.Data.ActualEnvTemp *= locationData.multiplicative;
-                if (locationData.fixedValue > -273)
-                {
-                    ModEntry.Data.ActualEnvTemp = locationData.fixedValue;
-                    fixedTemp = true;
-                }
-                timeDependentScale = locationData.timeDependentScale;
-                fluctuationScale = locationData.fluctuationScale;
+                ModEntry.Data.ActualEnvTemp = locationData.fixedValue;
+                fixedTemp = true;
             }
+            timeDependentScale = locationData.timeDependentScale;
+            fluctuationScale = locationData.fluctuationScale;
 
             if (location.Name.Contains("UndergroundMine"))
             {
