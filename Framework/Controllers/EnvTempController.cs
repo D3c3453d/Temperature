@@ -22,7 +22,7 @@ namespace Temperature.Framework.Controllers
 
         private static float distance(float aX, float aY, float bX, float bY)
         {
-            return (float)Math.Sqrt((aX - bX) * (aX - bX) + (aY - bY) * (aY - bY));
+            return MathF.Sqrt((aX - bX) * (aX - bX) + (aY - bY) * (aY - bY));
         }
 
         private static bool checkIfItemIsActive(SObject obj, int checkType = 0)
@@ -47,7 +47,7 @@ namespace Temperature.Framework.Controllers
 
             string season = location.GetSeason().ToString();
             EnvModifiers seasonData = DataController.Seasons.Data.GetValueOrDefault(season) ?? new EnvModifiers();
-            ModEntry.Data.ActualEnvTemp *= seasonData.multiplicative;
+            ModEntry.PlayerData.EnvTemp *= seasonData.multiplicative;
         }
 
         private static void applyWeather(GameLocation location)
@@ -56,18 +56,18 @@ namespace Temperature.Framework.Controllers
 
             string weather = location.GetWeather().Weather;
             EnvModifiers weatherData = DataController.Weather.Data.GetValueOrDefault(weather) ?? new EnvModifiers();
-            ModEntry.Data.ActualEnvTemp *= weatherData.multiplicative;
+            ModEntry.PlayerData.EnvTemp *= weatherData.multiplicative;
         }
 
         private static void applyLocation(GameLocation location)
         {
             // location temperature modifiers
             var locationData = DataController.Locations.Data.GetValueOrDefault(location.Name) ?? new EnvModifiers();
-            ModEntry.Data.ActualEnvTemp += locationData.additive;
-            ModEntry.Data.ActualEnvTemp *= locationData.multiplicative;
+            ModEntry.PlayerData.EnvTemp += locationData.additive;
+            ModEntry.PlayerData.EnvTemp *= locationData.multiplicative;
             if (locationData.fixedValue > -273)
             {
-                ModEntry.Data.ActualEnvTemp = locationData.fixedValue;
+                ModEntry.PlayerData.EnvTemp = locationData.fixedValue;
                 fixedTemp = true;
             }
             timeDependentScale = locationData.timeDependentScale;
@@ -79,15 +79,15 @@ namespace Temperature.Framework.Controllers
                 switch (currentMineLevel)
                 {
                     case 77377:
-                        ModEntry.Data.ActualEnvTemp = ModEntry.Data.InitialEnvTemp; break;
+                        ModEntry.PlayerData.EnvTemp = ModEntry.Config.DefaultEnvTemp; break;
                     case >= 121:
-                        ModEntry.Data.ActualEnvTemp = ModEntry.Data.InitialEnvTemp + 0.045f * currentMineLevel; break;
+                        ModEntry.PlayerData.EnvTemp = ModEntry.Config.DefaultEnvTemp + 0.045f * currentMineLevel; break;
                     case >= 80:
-                        ModEntry.Data.ActualEnvTemp = 1.1f * (float)Math.Pow(currentMineLevel - 60, 1.05); break;
+                        ModEntry.PlayerData.EnvTemp = 1.1f * MathF.Pow(currentMineLevel - 60, 1.05f); break;
                     case >= 40:
-                        ModEntry.Data.ActualEnvTemp = 0.03f * (float)Math.Pow(currentMineLevel - 60, 2) - 12; break;
+                        ModEntry.PlayerData.EnvTemp = 0.03f * MathF.Pow(currentMineLevel - 60, 2) - 12; break;
                     case >= 0:
-                        ModEntry.Data.ActualEnvTemp = ModEntry.Data.InitialEnvTemp + 0.22f * currentMineLevel; break;
+                        ModEntry.PlayerData.EnvTemp = ModEntry.Config.DefaultEnvTemp + 0.22f * currentMineLevel; break;
                 }
                 fixedTemp = true;
             }
@@ -95,11 +95,11 @@ namespace Temperature.Framework.Controllers
             if (!location.IsOutdoors)
             {
                 if (location.IsFarm)
-                    ModEntry.Data.ActualEnvTemp +=
-                    (ModEntry.Data.InitialEnvTemp - ModEntry.Data.ActualEnvTemp) * ModEntry.Config.FarmIndoorTemperatureMultiplier;
+                    ModEntry.PlayerData.EnvTemp +=
+                    (ModEntry.Config.DefaultEnvTemp - ModEntry.PlayerData.EnvTemp) * ModEntry.Config.FarmIndoorTemperatureMultiplier;
                 else
-                    ModEntry.Data.ActualEnvTemp +=
-                    (ModEntry.Data.InitialEnvTemp - ModEntry.Data.ActualEnvTemp) * ModEntry.Config.IndoorTemperatureMultiplier;
+                    ModEntry.PlayerData.EnvTemp +=
+                    (ModEntry.Config.DefaultEnvTemp - ModEntry.PlayerData.EnvTemp) * ModEntry.Config.IndoorTemperatureMultiplier;
             }
         }
 
@@ -125,16 +125,16 @@ namespace Temperature.Framework.Controllers
                             if (objectData.needActive && !checkIfItemIsActive(obj, objectData.activeType)) continue;
 
                             // prioritize ambient temp if it exceed device's core temp
-                            if ((objectData.deviceType.Equals("heating") && objectData.coreTemp < ModEntry.Data.ActualEnvTemp) ||
-                                (objectData.deviceType.Equals("cooling") && objectData.coreTemp > ModEntry.Data.ActualEnvTemp))
+                            if ((objectData.deviceType.Equals("heating") && objectData.coreTemp < ModEntry.PlayerData.EnvTemp) ||
+                                (objectData.deviceType.Equals("cooling") && objectData.coreTemp > ModEntry.PlayerData.EnvTemp))
                                 continue;
 
                             // dealing with target temp this.value here?
-                            float dist = Math.Max(distance(pixelToTile(obj.GetBoundingBox().Center.X), pixelToTile(obj.GetBoundingBox().Center.Y), playerTileX, playerTileY), 1);
+                            float dist = MathF.Max(distance(pixelToTile(obj.GetBoundingBox().Center.X), pixelToTile(obj.GetBoundingBox().Center.Y), playerTileX, playerTileY), 1);
                             if (dist <= objectData.effectiveRange)
                             {
-                                float tempModifierEntry = (objectData.coreTemp - ModEntry.Data.ActualEnvTemp) / (15 * (dist - 1) / objectData.effectiveRange + 1);
-                                ModEntry.Data.ActualEnvTemp += tempModifierEntry;
+                                float tempModifierEntry = (objectData.coreTemp - ModEntry.PlayerData.EnvTemp) / (15 * (dist - 1) / objectData.effectiveRange + 1);
+                                ModEntry.PlayerData.EnvTemp += tempModifierEntry;
                             }
                         }
                     }
@@ -175,16 +175,16 @@ namespace Temperature.Framework.Controllers
                     //calculate indoor heating power base on core temp and range (assume full effectiveness if object is placed indoor)
                     if (objectData.deviceType.Equals("general"))
                     {
-                        float perfectAmbientPower = area * ModEntry.Data.InitialEnvTemp;
+                        float perfectAmbientPower = area * ModEntry.Config.DefaultEnvTemp;
                         float maxPowerFromDevice = objectData.operationalRange * (objectData.effectiveRange * 2 + 1) * (objectData.effectiveRange * 2 + 1) * objectData.ambientCoefficient;
-                        if (ModEntry.Data.InitialEnvTemp > ModEntry.Data.ActualEnvTemp)
-                            power = Math.Min(perfectAmbientPower, power + maxPowerFromDevice);
+                        if (ModEntry.Config.DefaultEnvTemp > ModEntry.PlayerData.EnvTemp)
+                            power = MathF.Min(perfectAmbientPower, power + maxPowerFromDevice);
                         else
-                            power = Math.Max(perfectAmbientPower, power - maxPowerFromDevice);
+                            power = MathF.Max(perfectAmbientPower, power - maxPowerFromDevice);
                     }
-                    else power += (objectData.coreTemp - ModEntry.Data.InitialEnvTemp) * (objectData.effectiveRange * 2 + 1) * (objectData.effectiveRange * 2 + 1) * objectData.ambientCoefficient;
+                    else power += (objectData.coreTemp - ModEntry.Config.DefaultEnvTemp) * (objectData.effectiveRange * 2 + 1) * (objectData.effectiveRange * 2 + 1) * objectData.ambientCoefficient;
                 }
-                ModEntry.Data.ActualEnvTemp += 0.5f * power / area;
+                ModEntry.PlayerData.EnvTemp += 0.5f * power / area;
             }
         }
 
@@ -192,7 +192,7 @@ namespace Temperature.Framework.Controllers
         {
             // main func
             // OnSecondPassed
-            ModEntry.Data.ActualEnvTemp = ModEntry.Data.InitialEnvTemp;
+            ModEntry.PlayerData.EnvTemp = ModEntry.Config.DefaultEnvTemp;
             GameLocation location = Game1.player.currentLocation;
             fixedTemp = false;
             if (location != null)
@@ -205,17 +205,17 @@ namespace Temperature.Framework.Controllers
             }
             else
             {
-                ModEntry.Data.ActualEnvTemp = ModEntry.Data.InitialEnvTemp;
+                ModEntry.PlayerData.EnvTemp = ModEntry.Config.DefaultEnvTemp;
                 fixedTemp = true;
             }
 
             // day cycle
             float decTime = Game1.timeOfDay / 100 + Game1.timeOfDay % 100 / 60.0f;
-            ModEntry.Data.ActualEnvTemp += fixedTemp ? 0 : (float)Math.Sin((decTime - 8.5) / (Math.PI * 1.2)) * timeDependentScale;
+            ModEntry.PlayerData.EnvTemp += fixedTemp ? 0 : MathF.Sin((decTime - 8.5f) / (MathF.PI * 1.2f)) * timeDependentScale;
 
             // fluctuation
-            ModEntry.Data.ActualEnvTemp += fluctuation;
-            Misc.LogHelper.Warn(ModEntry.Data.ActualEnvTemp.ToString());
+            ModEntry.PlayerData.EnvTemp += fluctuation;
+            Misc.LogHelper.Warn("EnvTemp " + ModEntry.PlayerData.EnvTemp);
         }
 
         public static void FluctuationUpdate()

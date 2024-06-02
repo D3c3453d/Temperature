@@ -12,7 +12,7 @@ namespace Temperature
     {
         public static ModEntry Instance { get; private set; }
 
-        public static PlayerData Data { get; set; }
+        public static PlayerData PlayerData { get; set; }
 
         public static Config Config { get; private set; }
 

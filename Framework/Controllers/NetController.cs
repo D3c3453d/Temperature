@@ -20,22 +20,22 @@ namespace Temperature.Framework.Controllers
         {
             if (Context.IsMainPlayer)
             {
-                PlayerData _data = Helper.Data.ReadSaveData<PlayerData>($"{player_id}") ?? new PlayerData();
-                SyncBody _toSend = new SyncBody(_data,
+                PlayerData _playerData = Helper.Data.ReadSaveData<PlayerData>($"{player_id}") ?? new PlayerData();
+                SyncBody _toSend = new(_playerData,
                     DataController.Seasons.Data,
                     DataController.Weather.Data,
                     DataController.Locations.Data,
                     DataController.Clothes.Data,
                     DataController.Objects.Data);
 
-                Helper.Data.WriteSaveData($"{player_id}", _data);
+                Helper.Data.WriteSaveData($"{player_id}", _playerData);
 
-                LogHelper.Trace($"Sending important Data to farmhand {player_id}.");
+                LogHelper.Trace($"Sending important PlayerData to farmhand {player_id}.");
                 Helper.Multiplayer.SendMessage(
                     message: _toSend,
                     messageType: "SaveDataFromHost",
-                    modIDs: new[] { Manifest.UniqueID },
-                    playerIDs: new[] { player_id }
+                    modIDs: [Manifest.UniqueID],
+                    playerIDs: [player_id]
                 );
             }
         }
@@ -47,22 +47,22 @@ namespace Temperature.Framework.Controllers
                 LogHelper.Trace($"Sending important Data to all farmhands.");
                 foreach (Farmer farmer in Game1.getOnlineFarmers())
                 {
-                    PlayerData _data = Helper.Data.ReadSaveData<PlayerData>($"{farmer.UniqueMultiplayerID}") ?? new PlayerData();
-                    SyncBody _toSend = new SyncBody(_data,
+                    PlayerData _playerData = Helper.Data.ReadSaveData<PlayerData>($"{farmer.UniqueMultiplayerID}") ?? new PlayerData();
+                    SyncBody _toSend = new(_playerData,
                         DataController.Seasons.Data,
                         DataController.Weather.Data,
                         DataController.Locations.Data,
                         DataController.Clothes.Data,
                         DataController.Objects.Data);
 
-                    Helper.Data.WriteSaveData($"{farmer.UniqueMultiplayerID}", _data);
+                    Helper.Data.WriteSaveData($"{farmer.UniqueMultiplayerID}", _playerData);
 
                     LogHelper.Trace($"Sending important Data to farmhand {farmer.UniqueMultiplayerID}.");
                     Helper.Multiplayer.SendMessage(
                         message: _toSend,
                         messageType: "SaveDataFromHost",
-                        modIDs: new[] { Manifest.UniqueID },
-                        playerIDs: new[] { farmer.UniqueMultiplayerID }
+                        modIDs: [Manifest.UniqueID],
+                        playerIDs: [farmer.UniqueMultiplayerID]
                     );
                 }
             }
@@ -72,25 +72,25 @@ namespace Temperature.Framework.Controllers
         {
             if (Context.IsMainPlayer)
             {
-                if (Game1.IsMultiplayer) LogHelper.Trace($"Saving host Data.");
+                if (Game1.IsMultiplayer) LogHelper.Trace($"Saving host PlayerData.");
 
-                PlayerData _data = Helper.Data.ReadSaveData<PlayerData>($"{Game1.player.UniqueMultiplayerID}") ?? new PlayerData();
+                PlayerData _playerData = Helper.Data.ReadSaveData<PlayerData>($"{Game1.player.UniqueMultiplayerID}") ?? new PlayerData();
                 if (!_firstLoad)
                 {
-                    ModEntry.Data = _data;
+                    ModEntry.PlayerData = _playerData;
                     _firstLoad = true;
                 }
-                Helper.Data.WriteSaveData($"{Game1.player.UniqueMultiplayerID}", ModEntry.Data);
+                Helper.Data.WriteSaveData($"{Game1.player.UniqueMultiplayerID}", ModEntry.PlayerData);
             }
             else
             {
-                LogHelper.Trace($"Sending important Data to host.");
+                LogHelper.Trace($"Sending important PlayerData to host.");
 
                 Helper.Multiplayer.SendMessage(
-                    message: ModEntry.Data,
+                    message: ModEntry.PlayerData,
                     messageType: "SaveDataToHost",
-                    modIDs: new[] { Manifest.UniqueID },
-                    playerIDs: new[] { Game1.MasterPlayer.UniqueMultiplayerID }
+                    modIDs: [Manifest.UniqueID],
+                    playerIDs: [Game1.MasterPlayer.UniqueMultiplayerID]
                 );
             }
         }
@@ -100,42 +100,42 @@ namespace Temperature.Framework.Controllers
             if (!Context.IsMainPlayer && e.FromModID == Manifest.UniqueID && e.Type == "SaveDataFromHost")
             {
                 SyncBody _body = e.ReadAs<SyncBody>();
-                ModEntry.Data = _body.data;
+                ModEntry.PlayerData = _body.playerData;
                 DataController.Seasons.Data = _body.seasons;
                 DataController.Weather.Data = _body.weather;
                 DataController.Locations.Data = _body.locations;
                 DataController.Clothes.Data = _body.clothes;
                 DataController.Objects.Data = _body.objects;
 
-                LogHelper.Trace("Received important Data from host.");
+                LogHelper.Trace("Received important PlayerData from host.");
             }
 
             if (Context.IsMainPlayer && e.FromModID == Manifest.UniqueID && e.Type == "SaveDataToHost")
             {
-                PlayerData _data = e.ReadAs<PlayerData>();
-                LogHelper.Trace($"Received important Data from player {e.FromPlayerID}.");
-                Helper.Data.WriteSaveData($"{e.FromPlayerID}", _data);
+                PlayerData _playerData = e.ReadAs<PlayerData>();
+                LogHelper.Trace($"Received important PlayerData from player {e.FromPlayerID}.");
+                Helper.Data.WriteSaveData($"{e.FromPlayerID}", _playerData);
             }
         }
     }
 
     public class SyncBody
     {
-        public PlayerData data;
+        public PlayerData playerData;
         public Dictionary<string, EnvModifiers> seasons;
         public Dictionary<string, EnvModifiers> weather;
         public Dictionary<string, EnvModifiers> locations;
         public Dictionary<string, Dictionary<string, ClothModifiers>> clothes;
         public Dictionary<string, ObjectModifiers> objects;
 
-        public SyncBody(PlayerData _data,
+        public SyncBody(PlayerData _playerData,
             Dictionary<string, EnvModifiers> _seasons,
             Dictionary<string, EnvModifiers> _weather,
             Dictionary<string, EnvModifiers> _locations,
             Dictionary<string, Dictionary<string, ClothModifiers>> _clothes,
             Dictionary<string, ObjectModifiers> _objects)
         {
-            data = _data;
+            playerData = _playerData;
             seasons = _seasons;
             weather = _weather;
             locations = _locations;

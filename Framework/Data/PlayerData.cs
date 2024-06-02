@@ -2,9 +2,9 @@ namespace Temperature.Framework.Data
 {
     public class PlayerData
     {
-        public float ActualEnvTemp { get; set; } = 23;
-        public float ActualBodyTemp { get; set; } = 23;
-        public float InitialEnvTemp { get; set; } = 23;
-        public float InitialBodyTemp { get; set; } = 23;
+        public float EnvTemp { get; set; } = ModEntry.Config.DefaultEnvTemp;
+        public float BodyTemp { get; set; } = ModEntry.Config.DefaultBodyTemp;
+        public float MaxComfyTemp { get; set; } = ModEntry.Config.DefaultMaxComfyTemp;
+        public float MinComfyTemp { get; set; } = ModEntry.Config.DefaultMinComfyTemp;
     }
 }
