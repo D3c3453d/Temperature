@@ -58,6 +58,7 @@ namespace Temperature
             if (!Context.IsPlayerFree || !Context.IsWorldReady || Game1.paused)
                 return;
             EnvTempController.Update();
+            BodyTempController.Update();
         }
 
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
