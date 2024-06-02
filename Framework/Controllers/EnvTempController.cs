@@ -25,10 +25,10 @@ namespace Temperature.Framework.Controllers
             return MathF.Sqrt((aX - bX) * (aX - bX) + (aY - bY) * (aY - bY));
         }
 
-        private static bool checkIfItemIsActive(SObject obj, int checkType = 0)
+        private static bool checkIfItemIsActive(SObject obj, bool activeType = false)
         {
             //check if the object is a machine for crafting (eg. Furnace, Charcoal Kiln)
-            if (checkType == 1)
+            if (activeType)
             {
                 if (obj.MinutesUntilReady > 0 && obj.heldObject.Value != null) return true;
                 else return false;

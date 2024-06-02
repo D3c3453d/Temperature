@@ -12,20 +12,20 @@ namespace Temperature.Framework.Data
         {
             var rawData = ModEntry.Instance.Helper.Data.ReadJsonFile<Dictionary<string, T>>(path);
             if (rawData == null) return;
-            var actualData = rawData.Where(db => (db.Key != null) && (db.Value != null)).ToList();
+            var actualData = rawData.Where(data => (data.Key != null) && (data.Value != null)).ToList();
             actualData.ForEach(AddToInGameData);
         }
 
-        private void AddToInGameData(KeyValuePair<string, T> db)
+        private void AddToInGameData(KeyValuePair<string, T> data)
         {
             try
             {
-                Data.Add(db.Key, db.Value);
+                Data.Add(data.Key, data.Value);
             }
             catch (System.ArgumentException exception)
             {
 
-                LogHelper.Trace($"({db.Key}) — Duplicate Entry!");
+                LogHelper.Trace($"({data.Key}) — Duplicate Entry!");
                 LogHelper.Trace(exception.Message);
                 LogHelper.Trace(exception.StackTrace);
             }

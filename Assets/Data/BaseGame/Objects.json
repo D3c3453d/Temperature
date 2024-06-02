@@ -53,7 +53,7 @@
         "coreTemp": 25.0,
         "effectiveRange": 3,
         "needActive": true,
-        "activeType": 1
+        "activeType": true
     },
     "Furnace":
     {
@@ -61,7 +61,7 @@
         "coreTemp": 60.0,
         "effectiveRange": 4,
         "needActive": true,
-        "activeType": 1
+        "activeType": true
     },
     "Passive Cooler":
     {
@@ -69,7 +69,7 @@
         "coreTemp": 20.0,
         "effectiveRange": 3,
         "needActive": true,
-        "activeType": 1,
+        "activeType": true,
         "ambientCoefficient": 0.75
     },
     "Air Cooler":
@@ -78,7 +78,7 @@
         "coreTemp": 18.0,
         "effectiveRange": 4,
         "needActive": true,
-        "activeType": 1,
+        "activeType": true,
         "ambientCoefficient": 1.25
     },
     "Charcoal Kiln":
@@ -87,7 +87,7 @@
         "coreTemp": 60.0,
         "effectiveRange": 3,
         "needActive": true,
-        "activeType": 1
+        "activeType": true
     },
     "Campfire":
     {
@@ -165,7 +165,7 @@
         "coreTemp": 60.0,
         "effectiveRange": 6,
         "needActive": true,
-        "activeType": 1,
+        "activeType": true,
         "ambientCoefficient": 1.25
     },
     "Air Conditioner":
@@ -174,7 +174,7 @@
         "coreTemp": 25.0,
         "effectiveRange": 4,
         "needActive": true,
-        "activeType": 1,
+        "activeType": true,
         "operationalRange": 15,
         "ambientCoefficient": 2
     },
@@ -184,7 +184,7 @@
         "coreTemp": 25.0,
         "effectiveRange": 7,
         "needActive": true,
-        "activeType": 1,
+        "activeType": true,
         "operationalRange": 20,
         "ambientCoefficient": 4
     }

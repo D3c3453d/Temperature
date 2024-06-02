@@ -34,5 +34,9 @@ namespace Temperature.Framework.Misc
         {
             monitor.Log(str, LogLevel.Error);
         }
+        public static void Alert(string str)
+        {
+            monitor.Log(str, LogLevel.Alert);
+        }
     }
 }

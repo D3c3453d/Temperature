@@ -7,7 +7,7 @@ namespace Temperature.Framework.Data
         public float effectiveRange { get; set; } = 1;
         public bool needActive { get; set; } = false;
         //0 for normal detection (for furniture), 1 for machine detection (need power)
-        public int activeType { get; set; } = 0;
+        public bool activeType { get; set; } = false;
         //ambient temp manipulation
         public float ambientCoefficient { get; set; } = 1;
 
