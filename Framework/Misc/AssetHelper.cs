@@ -1,4 +1,5 @@
 using System.IO;
+using StardewModdingAPI;
 
 namespace Temperature.Framework.Misc
 {
@@ -8,12 +9,12 @@ namespace Temperature.Framework.Misc
 
         public static string GetBarAssetsFolderPath()
         {
-            return Path.Combine(AssetFolderName, BarsConstants.BarAssetsFolderName);
+            return Path.Combine(ModEntry.Instance.Helper.DirectoryPath, AssetFolderName, BarsConstants.BarAssetsFolderName);
         }
 
         public static string GetDataAssetsFolderPath(bool toTheCustom = false)
         {
-            return Path.Combine(AssetFolderName, DataConstants.DataAssetsFolderName,
+            return Path.Combine(ModEntry.Instance.Helper.DirectoryPath, AssetFolderName, DataConstants.DataAssetsFolderName,
                                 toTheCustom ? DataConstants.CustomDataFolderName : DataConstants.BaseGameDataFolderName);
         }
 

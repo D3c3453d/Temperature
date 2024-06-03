@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Temperature.Framework.Misc;
+using System.IO;
+using System.Text.Json;
 
 namespace Temperature.Framework.Data
 {
@@ -10,10 +12,24 @@ namespace Temperature.Framework.Data
 
         public void LoadData(string path)
         {
-            var rawData = ModEntry.Instance.Helper.Data.ReadJsonFile<Dictionary<string, T>>(path);
+            string jsonData = null;
+            Dictionary<string, T> rawData = null;
+
+            try { jsonData = File.ReadAllText(path); }
+            catch (FileNotFoundException) { return; }
+            catch (DirectoryNotFoundException) { return; }
+            if (jsonData == null) return;
+
+            try { rawData = JsonSerializer.Deserialize<Dictionary<string, T>>(jsonData); }
+            catch (JsonException exception)
+            {
+                LogHelper.Warn($"({path}) — Can't Deserialize!");
+                LogHelper.Warn(exception.Message);
+                LogHelper.Warn(exception.StackTrace);
+                return;
+            }
             if (rawData == null) return;
-            var actualData = rawData.Where(data => (data.Key != null) && (data.Value != null)).ToList();
-            actualData.ForEach(AddToInGameData);
+            rawData.ToList().ForEach(AddToInGameData);
         }
 
         private void AddToInGameData(KeyValuePair<string, T> data)
