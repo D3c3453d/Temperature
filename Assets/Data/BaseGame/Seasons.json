@@ -1,18 +1,27 @@
 {
+    "Full": 
+    {
+        "MaxValue": 30,
+        "MinValue": -10
+    },
     "Spring": 
     {
-        "multiplicative": 0.9
+        "MaxValue": 15,
+        "MinValue": 0
     },
     "Summer": 
     {
-        "multiplicative": 1.1
+        "MaxValue": 30,
+        "MinValue": 15
     },
     "Fall": 
     {
-        "multiplicative": 0.9
+        "MaxValue": 15,
+        "MinValue": 0
     },
     "Winter": 
     {
-        "multiplicative": 0
+        "MaxValue": 0,
+        "MinValue": -10
     }
 }

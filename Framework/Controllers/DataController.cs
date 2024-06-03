@@ -4,6 +4,7 @@ using Temperature.Framework.Data;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics.Contracts;
 
 namespace Temperature.Framework.Controllers
 {
@@ -14,6 +15,7 @@ namespace Temperature.Framework.Controllers
         public static GenericData<EnvModifiers> Locations { get; set; } = new();
         public static GenericData<Dictionary<string, ClothModifiers>> Clothes { get; set; } = new();
         public static GenericData<ObjectModifiers> Objects { get; set; } = new();
+        public static float ObjectsMaxEffectiveRange = 0;
         public static void LoadData()
         {
             // BaseGame data
@@ -33,6 +35,12 @@ namespace Temperature.Framework.Controllers
                 Locations.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.LocationsDataAssetFileName));
                 Clothes.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.ClothesDataAssetFileName));
                 Objects.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.ObjectsDataAssetFileName));
+            }
+
+            foreach (var obj in Objects.Data)
+            {
+                if (obj.Value.EffectiveRange > ObjectsMaxEffectiveRange)
+                    ObjectsMaxEffectiveRange = obj.Value.EffectiveRange;
             }
         }
     }

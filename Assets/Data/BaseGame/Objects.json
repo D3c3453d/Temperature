@@ -1,191 +1,191 @@
 {
     "Torch":
     {
-        "deviceType": "heating",
-        "coreTemp": 35.0,
-        "effectiveRange": 1
+        "DeviceType": "heating",
+        "CoreTemp": 35.0,
+        "EffectiveRange": 1
     },
     "Brick Fireplace":
     {
-        "deviceType": "heating",
-        "coreTemp": 60.0,
-        "effectiveRange": 4,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 60.0,
+        "EffectiveRange": 4,
+        "NeedActive": true
     },
     "Elegant Fireplace":
     {
-        "deviceType": "heating",
-        "coreTemp": 60.0,
-        "effectiveRange": 4,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 60.0,
+        "EffectiveRange": 4,
+        "NeedActive": true
     },
     "Iridium Fireplace":
     {
-        "deviceType": "heating",
-        "coreTemp": 60.0,
-        "effectiveRange": 4,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 60.0,
+        "EffectiveRange": 4,
+        "NeedActive": true
     },
     "Stone Fireplace":
     {
-        "deviceType": "heating",
-        "coreTemp": 60.0,
-        "effectiveRange": 4,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 60.0,
+        "EffectiveRange": 4,
+        "NeedActive": true
     },
     "Monster Fireplace":
     {
-        "deviceType": "heating",
-        "coreTemp": 60.0,
-        "effectiveRange": 4,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 60.0,
+        "EffectiveRange": 4,
+        "NeedActive": true
     },
     "Stove Fireplace":
     {
-        "deviceType": "heating",
-        "coreTemp": 60.0,
-        "effectiveRange": 4,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 60.0,
+        "EffectiveRange": 4,
+        "NeedActive": true
     },
     "Fan":
     {
-        "deviceType": "cooling",
-        "coreTemp": 25.0,
-        "effectiveRange": 3,
-        "needActive": true,
-        "activeType": true
+        "DeviceType": "cooling",
+        "CoreTemp": 25.0,
+        "EffectiveRange": 3,
+        "NeedActive": true,
+        "ActiveType": true
     },
     "Furnace":
     {
-        "deviceType": "heating",
-        "coreTemp": 60.0,
-        "effectiveRange": 4,
-        "needActive": true,
-        "activeType": true
+        "DeviceType": "heating",
+        "CoreTemp": 60.0,
+        "EffectiveRange": 4,
+        "NeedActive": true,
+        "ActiveType": true
     },
     "Passive Cooler":
     {
-        "deviceType": "cooling",
-        "coreTemp": 20.0,
-        "effectiveRange": 3,
-        "needActive": true,
-        "activeType": true,
-        "ambientCoefficient": 0.75
+        "DeviceType": "cooling",
+        "CoreTemp": 20.0,
+        "EffectiveRange": 3,
+        "NeedActive": true,
+        "ActiveType": true,
+        "AmbientCoefficient": 0.75
     },
     "Air Cooler":
     {
-        "deviceType": "cooling",
-        "coreTemp": 18.0,
-        "effectiveRange": 4,
-        "needActive": true,
-        "activeType": true,
-        "ambientCoefficient": 1.25
+        "DeviceType": "cooling",
+        "CoreTemp": 18.0,
+        "EffectiveRange": 4,
+        "NeedActive": true,
+        "ActiveType": true,
+        "AmbientCoefficient": 1.25
     },
     "Charcoal Kiln":
     {
-        "deviceType": "heating",
-        "coreTemp": 60.0,
-        "effectiveRange": 3,
-        "needActive": true,
-        "activeType": true
+        "DeviceType": "heating",
+        "CoreTemp": 60.0,
+        "EffectiveRange": 3,
+        "NeedActive": true,
+        "ActiveType": true
     },
     "Campfire":
     {
-        "deviceType": "heating",
-        "coreTemp": 50.0,
-        "effectiveRange": 2,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 50.0,
+        "EffectiveRange": 2,
+        "NeedActive": true
     },
     "Wooden Brazier":
     {
-        "deviceType": "heating",
-        "coreTemp": 50.0,
-        "effectiveRange": 2,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 50.0,
+        "EffectiveRange": 2,
+        "NeedActive": true
     },
     "Stone Brazier":
     {
-        "deviceType": "heating",
-        "coreTemp": 50.0,
-        "effectiveRange": 2,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 50.0,
+        "EffectiveRange": 2,
+        "NeedActive": true
     },
     "Gold Brazier":
     {
-        "deviceType": "heating",
-        "coreTemp": 50.0,
-        "effectiveRange": 2,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 50.0,
+        "EffectiveRange": 2,
+        "NeedActive": true
     },
     "Stump Brazier":
     {
-        "deviceType": "heating",
-        "coreTemp": 50.0,
-        "effectiveRange": 2,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 50.0,
+        "EffectiveRange": 2,
+        "NeedActive": true
     },
     "Barrel Brazier":
     {
-        "deviceType": "heating",
-        "coreTemp": 50.0,
-        "effectiveRange": 2,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 50.0,
+        "EffectiveRange": 2,
+        "NeedActive": true
     },
     "Skull Brazier":
     {
-        "deviceType": "heating",
-        "coreTemp": 50.0,
-        "effectiveRange": 2,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 50.0,
+        "EffectiveRange": 2,
+        "NeedActive": true
     },
     "Marble Brazier":
     {
-        "deviceType": "heating",
-        "coreTemp": 50.0,
-        "effectiveRange": 2,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 50.0,
+        "EffectiveRange": 2,
+        "NeedActive": true
     },
     "Carved Brazier":
     {
-        "deviceType": "heating",
-        "coreTemp": 50.0,
-        "effectiveRange": 2,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 50.0,
+        "EffectiveRange": 2,
+        "NeedActive": true
     },
     "Heater":
     {
-        "deviceType": "heating",
-        "coreTemp": 60.0,
-        "effectiveRange": 4,
-        "needActive": true
+        "DeviceType": "heating",
+        "CoreTemp": 60.0,
+        "EffectiveRange": 4,
+        "NeedActive": true
     },
     "Portable Heater":
     {
-        "deviceType": "heating",
-        "coreTemp": 60.0,
-        "effectiveRange": 6,
-        "needActive": true,
-        "activeType": true,
-        "ambientCoefficient": 1.25
+        "DeviceType": "heating",
+        "CoreTemp": 60.0,
+        "EffectiveRange": 6,
+        "NeedActive": true,
+        "ActiveType": true,
+        "AmbientCoefficient": 1.25
     },
     "Air Conditioner":
     {
-        "deviceType": "general",
-        "coreTemp": 25.0,
-        "effectiveRange": 4,
-        "needActive": true,
-        "activeType": true,
-        "operationalRange": 15,
-        "ambientCoefficient": 2
+        "DeviceType": "general",
+        "CoreTemp": 25.0,
+        "EffectiveRange": 4,
+        "NeedActive": true,
+        "ActiveType": true,
+        "OperationalRange": 15,
+        "AmbientCoefficient": 2
     },
     "Tall Air Conditioner":
     {
-        "deviceType": "general",
-        "coreTemp": 25.0,
-        "effectiveRange": 7,
-        "needActive": true,
-        "activeType": true,
-        "operationalRange": 20,
-        "ambientCoefficient": 4
+        "DeviceType": "general",
+        "CoreTemp": 25.0,
+        "EffectiveRange": 7,
+        "NeedActive": true,
+        "ActiveType": true,
+        "OperationalRange": 20,
+        "AmbientCoefficient": 4
     }
 }

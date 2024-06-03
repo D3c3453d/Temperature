@@ -1,11 +1,12 @@
 namespace Temperature.Framework.Data
 {
-    public class EnvModifiers
+    public class EnvModifiers(float minValue = DefaultConsts.AbsoluteZero, float maxValue = DefaultConsts.AbsoluteZero, float dayCycleScale = 0, float fluctuationScale = 0)
     {
-        public float additive { get; set; } = 0;
-        public float multiplicative { get; set; } = 1;
-        public float fixedValue { get; set; } = -274;
-        public float timeDependentScale { get; set; } = 4;
-        public float fluctuationScale { get; set; } = 1;
+        public float Additive { get; set; } = 0;
+        public float Multiplicative { get; set; } = 1;
+        public float MinValue { get; set; } = minValue;
+        public float MaxValue { get; set; } = maxValue;
+        public float DayCycleScale { get; set; } = dayCycleScale;
+        public float FluctuationScale { get; set; } = fluctuationScale;
     }
 }

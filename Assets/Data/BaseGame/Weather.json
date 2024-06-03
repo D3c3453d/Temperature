@@ -1,30 +1,30 @@
 {
     "Sun":
     {
-        "tempModifierMultiplicative": 1.2
+        "Multiplicative": 1.1
     },
     "Festival":
     {
-        "tempModifierMultiplicative": 1.2
+        "Multiplicative": 1.1
     },
     "Wedding":
     {
-        "tempModifierMultiplicative": 1.2
+        "Multiplicative": 1.1
     },
     "Storm":
     {
-        "tempModifierMultiplicative": 0.8
+        "Multiplicative": 0.8
     },
     "Rain":
     {
-        "tempModifierMultiplicative": 0.8
+        "Multiplicative": 0.8
     },
     "Windy":
     {
-        "tempModifierMultiplicative": 0.9
+        "Multiplicative": 0.9
     },
     "Snow":
     {
-        "tempModifierMultiplicative": 0.5
+        "Multiplicative": 0.5
     }
 }

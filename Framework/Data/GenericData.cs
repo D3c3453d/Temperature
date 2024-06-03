@@ -6,7 +6,7 @@ namespace Temperature.Framework.Data
 {
     public class GenericData<T>
     {
-        public Dictionary<string, T> Data { get; set; } = new();
+        public Dictionary<string, T> Data { get; set; } = [];
 
         public void LoadData(string path)
         {

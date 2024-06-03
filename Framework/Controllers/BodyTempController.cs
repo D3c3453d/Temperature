@@ -1,5 +1,4 @@
-using System.Diagnostics;
-
+using Temperature.Framework.Data;
 namespace Temperature.Framework.Controllers
 {
     public static class BodyTempController
@@ -13,20 +12,20 @@ namespace Temperature.Framework.Controllers
             if (envTempVal > ModEntry.PlayerData.MaxComfyTemp)
             {
                 // if more than maximum comfort temp
-                targetBodyTemp = ModEntry.Config.DefaultBodyTemp + ModEntry.Config.HighTemperatureSlope * (envTempVal - ModEntry.PlayerData.MaxComfyTemp);
+                targetBodyTemp = DefaultConsts.BodyTemp + DefaultConsts.HighTemperatureSlope * (envTempVal - ModEntry.PlayerData.MaxComfyTemp);
             }
             else if (envTempVal < ModEntry.PlayerData.MinComfyTemp)
             {
                 // if more than maximum comfort temp
-                targetBodyTemp = ModEntry.Config.DefaultBodyTemp + ModEntry.Config.LowTemperatureSlope * (ModEntry.PlayerData.MinComfyTemp - envTempVal);
+                targetBodyTemp = DefaultConsts.BodyTemp + DefaultConsts.LowTemperatureSlope * (ModEntry.PlayerData.MinComfyTemp - envTempVal);
             }
             else
             {
-                targetBodyTemp = ModEntry.Config.DefaultBodyTemp;
+                targetBodyTemp = DefaultConsts.BodyTemp;
             }
             //gradual temp change instead of abrupted
-            ModEntry.PlayerData.BodyTemp += (targetBodyTemp - ModEntry.PlayerData.BodyTemp) * ModEntry.Config.TemperatureChangeEasing;
-            Misc.LogHelper.Warn(ModEntry.PlayerData.BodyTemp.ToString());
+            ModEntry.PlayerData.BodyTemp += (targetBodyTemp - ModEntry.PlayerData.BodyTemp) * DefaultConsts.TemperatureChangeEasing;
+            //Misc.LogHelper.Warn(ModEntry.PlayerData.BodyTemp.ToString());
         }
 
         // internal void updateComfortTemp(string hat_name, string shirt_name, string pants_name, string boots_name)
