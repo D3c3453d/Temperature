@@ -15,7 +15,12 @@ namespace Temperature.Framework.Data
         public const float MinSeasonTemp = -10;
 
         public const float DayCycleScale = 4;
+        public const float DayCycleOffset = 9;
+        public const float DayCycleStretch = 12;
+
         public const float FluctuationScale = 1;
+
+        public const string FullSeasonName = "Full";
 
         // MINES
         public const string MineName = "UndergroundMine";

@@ -78,7 +78,7 @@ namespace Temperature.Framework.Controllers
         {
             // season temperature modifiers
             string season = location.GetSeason().ToString();
-            if (season == farmSeason) season = "Full";
+            if (season == farmSeason) season = DefaultConsts.FullSeasonName;
 
             EnvModifiers envData = DataController.Seasons.Data.GetValueOrDefault(season) ??
                 new EnvModifiers(DefaultConsts.MaxSeasonTemp, DefaultConsts.MinSeasonTemp);
@@ -249,6 +249,14 @@ namespace Temperature.Framework.Controllers
             return envTemp;
         }
 
+        private static float ApplyDayCycle(float envTemp, int timeOfDay)
+        {
+            float hours = timeOfDay / 100 + timeOfDay % 100 / 60.0f; // converting ingame "digital clock" time to irl hours with floating point
+            envTemp += MathF.Sin((hours - DefaultConsts.DayCycleOffset) * MathF.PI / DefaultConsts.DayCycleStretch) * dayCycleScale;
+
+            return envTemp;
+        }
+
         public static float Update()
         {
             // main func
@@ -272,11 +280,7 @@ namespace Temperature.Framework.Controllers
                 dayCycleScale = 0;
             }
 
-            // day cycle
-            float decTime = Game1.timeOfDay / 100 + Game1.timeOfDay % 100 / 60.0f;
-            envTemp += MathF.Sin((decTime - 8.5f) / (MathF.PI * 1.2f)) * dayCycleScale;
-
-            // fluctuation
+            envTemp = ApplyDayCycle(envTemp, Game1.timeOfDay);
             envTemp += fluctuation;
 
             return envTemp;
