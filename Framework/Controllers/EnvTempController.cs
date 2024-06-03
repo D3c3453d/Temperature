@@ -52,7 +52,7 @@ namespace Temperature.Framework.Controllers
             }
         }
 
-        private static float SeasonCycleTemp(float maxTemp, float minTemp, int totalDays)
+        private static float SeasonCycleTemp(float minTemp, float maxTemp, int totalDays)
         {
             return (maxTemp - minTemp) / 2 * MathF.Sin((totalDays - WorldDate.DaysPerMonth / 2) * MathF.PI / (2 * WorldDate.DaysPerMonth)) + (maxTemp + minTemp) / 2;
         }
@@ -62,7 +62,7 @@ namespace Temperature.Framework.Controllers
             switch (envData.MinValue, envData.MaxValue)
             {
                 case ( > DefaultConsts.AbsoluteZero, > DefaultConsts.AbsoluteZero):
-                    envTemp = SeasonCycleTemp(envData.MaxValue, envData.MinValue, totalDays);
+                    envTemp = SeasonCycleTemp(envData.MinValue, envData.MaxValue, totalDays);
                     break;
                 case ( > DefaultConsts.AbsoluteZero, DefaultConsts.AbsoluteZero):
                     envTemp = SeasonCycleTemp(envData.MinValue, envData.MinValue, totalDays);
@@ -116,7 +116,7 @@ namespace Temperature.Framework.Controllers
                 new EnvModifiers(DefaultConsts.AbsoluteZero, DefaultConsts.AbsoluteZero, DefaultConsts.DayCycleScale, DefaultConsts.FluctuationScale);
 
             // default location temperature modifiers
-            if (location.Name == "UndergroundMine" + currentMineLevel)
+            if (location.Name == DefaultConsts.MineName + currentMineLevel)
             {
                 switch (currentMineLevel)
                 {
@@ -125,7 +125,7 @@ namespace Temperature.Framework.Controllers
                         break;
                     case >= MineShaft.bottomOfMineLevel:
                         envTemp =
-                        StraightThroughPoint(currentMineLevel, DefaultConsts.SkullCavernTempSlope, MineShaft.bottomOfMineLevel, DefaultConsts.EnvTemp);
+                        StraightThroughPoint(currentMineLevel, DefaultConsts.SkullCaveTempSlope, MineShaft.bottomOfMineLevel, DefaultConsts.EnvTemp);
                         break;
                     case >= MineShaft.mineLavaLevel:
                         envTemp =
@@ -188,8 +188,8 @@ namespace Temperature.Framework.Controllers
                             if (objectData.NeedActive && !CheckIfItemIsActive(obj, objectData.ActiveType)) continue;
 
                             // prioritize ambient temp if it exceed device's core temp
-                            if ((objectData.DeviceType.Equals("heating") && objectData.CoreTemp < envTemp) ||
-                                (objectData.DeviceType.Equals("cooling") && objectData.CoreTemp > envTemp))
+                            if ((objectData.DeviceType == DefaultConsts.HeatingType && objectData.CoreTemp < envTemp) ||
+                                (objectData.DeviceType == DefaultConsts.CoolingType && objectData.CoreTemp > envTemp))
                                 continue;
 
                             // dealing with target temp this.value here?
@@ -238,7 +238,7 @@ namespace Temperature.Framework.Controllers
                 foreach (ObjectModifiers objectData in objectsData)
                 {
                     //calculate indoor heating power base on core temp and range (assume full effectiveness if object is placed indoor)
-                    if (objectData.DeviceType.Equals("general"))
+                    if (objectData.DeviceType == DefaultConsts.GeneralType)
                     {
                         float perfectAmbientPower = area * DefaultConsts.EnvTemp;
                         float maxPowerFromDevice = objectData.OperationalRange * (objectData.EffectiveRange * 2 + 1) * (objectData.EffectiveRange * 2 + 1) * objectData.AmbientCoefficient;
