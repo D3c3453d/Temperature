@@ -79,6 +79,9 @@ namespace Temperature.Framework.Controllers
 
         private static void ApplyLocation(GameLocation location)
         {
+            var locationData = DataController.Locations.Data.GetValueOrDefault(location.Name) ??
+                new EnvModifiers(DefaultConsts.AbsoluteZero, DefaultConsts.AbsoluteZero, DefaultConsts.DayCycleScale, DefaultConsts.FluctuationScale);
+
             // default location temperature modifiers
             if (location.Name == "UndergroundMine" + Game1.CurrentMineLevel)
             {
@@ -104,6 +107,7 @@ namespace Temperature.Framework.Controllers
                         ParabolaWithCentralExtremum(Game1.CurrentMineLevel, DefaultConsts.MaxUpperMineTemp, DefaultConsts.MinUpperMineTemp, MineShaft.upperArea, MineShaft.mineFrostLevel);
                         break;
                 }
+                locationData.DayCycleScale = 0;
             }
             else if (!location.IsOutdoors)
             {
@@ -116,8 +120,6 @@ namespace Temperature.Framework.Controllers
             }
 
             // custom locatin temperature modifiers
-            var locationData = DataController.Locations.Data.GetValueOrDefault(location.Name) ??
-                new EnvModifiers(DefaultConsts.AbsoluteZero, DefaultConsts.AbsoluteZero, DefaultConsts.DayCycleScale, DefaultConsts.FluctuationScale);
 
             ModEntry.PlayerData.EnvTemp += locationData.Additive;
             ModEntry.PlayerData.EnvTemp *= locationData.Multiplicative;
