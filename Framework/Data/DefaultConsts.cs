@@ -10,12 +10,19 @@ namespace Temperature.Framework.Data
         public const float EnvTemp = 25;
 
         public const float MaxSeasonTemp = 30;
-
         public const float MinSeasonTemp = -10;
 
         public const float DayCycleScale = 4;
-
         public const float FluctuationScale = 1;
+
+        public const float MaxFrostMineTemp = 0;
+        public const float MinFrostMineTemp = -15;
+
+        public const float MaxUpperMineTemp = 30;
+        public const float MinUpperMineTemp = 15;
+
+        public const float LavaMineTempSlope = 1;
+        public const float SkullCavernTempSlope = 0.01f;
 
         // BODY TEMP MODUL
 

@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 using Temperature.Framework.Data;
+using StardewValley.Locations;
 using SObject = StardewValley.Object;
-
 
 namespace Temperature.Framework.Controllers
 {
@@ -26,6 +22,18 @@ namespace Temperature.Framework.Controllers
         private static float Distance(float aX, float aY, float bX, float bY)
         {
             return MathF.Sqrt((aX - bX) * (aX - bX) + (aY - bY) * (aY - bY));
+        }
+
+        private static float ParabolaWithCentralExtremum(float x, float extremumValue, float boundaryValue, float boundary1, float boundary2)
+        {
+            return 4 * (boundaryValue - extremumValue) /
+            ((boundary1 - boundary2) * (boundary1 - boundary2)) *
+            (x - (boundary1 + boundary2) / 2) * (x - (boundary1 + boundary2) / 2) + extremumValue;
+        }
+
+        private static float StraightThroughPoint(float x, float slope, float pointX, float pointY)
+        {
+            return slope * (x - pointX) + pointY;
         }
 
         private static bool CheckIfItemIsActive(SObject obj, bool activeType = false)
@@ -72,29 +80,39 @@ namespace Temperature.Framework.Controllers
         private static void ApplyLocation(GameLocation location)
         {
             // default location temperature modifiers
-            switch (Game1.CurrentMineLevel)
+            if (location.Name == "UndergroundMine" + Game1.CurrentMineLevel)
             {
-                case StardewValley.Locations.MineShaft.upperArea:
-                    if (!location.IsOutdoors)
-                    {
-                        float indoorModifier;
-                        if (location.IsFarm)
-                            indoorModifier = (DefaultConsts.EnvTemp - ModEntry.PlayerData.EnvTemp) * ModEntry.Config.FarmIndoorTemperatureMultiplier;
-                        else
-                            indoorModifier = (DefaultConsts.EnvTemp - ModEntry.PlayerData.EnvTemp) * ModEntry.Config.IndoorTemperatureMultiplier;
-                        ModEntry.PlayerData.EnvTemp += indoorModifier;
-                    }
-                    break;
-                case StardewValley.Locations.MineShaft.quarryMineShaft:
-                    ModEntry.PlayerData.EnvTemp = DefaultConsts.EnvTemp; break;
-                case >= StardewValley.Locations.MineShaft.bottomOfMineLevel:
-                    ModEntry.PlayerData.EnvTemp = DefaultConsts.EnvTemp + 0.045f * Game1.CurrentMineLevel; break;
-                case >= StardewValley.Locations.MineShaft.mineLavaLevel:
-                    ModEntry.PlayerData.EnvTemp = 1.3f * (Game1.CurrentMineLevel - 60); break;
-                case >= StardewValley.Locations.MineShaft.mineFrostLevel:
-                    ModEntry.PlayerData.EnvTemp = 0.03f * MathF.Pow(Game1.CurrentMineLevel - 60, 2) - 12; break;
-                case > StardewValley.Locations.MineShaft.upperArea:
-                    ModEntry.PlayerData.EnvTemp = DefaultConsts.EnvTemp + 0.22f * Game1.CurrentMineLevel; break;
+                switch (Game1.CurrentMineLevel)
+                {
+                    case MineShaft.quarryMineShaft:
+                        ModEntry.PlayerData.EnvTemp = DefaultConsts.EnvTemp;
+                        break;
+                    case >= MineShaft.bottomOfMineLevel:
+                        ModEntry.PlayerData.EnvTemp =
+                        StraightThroughPoint(Game1.CurrentMineLevel, DefaultConsts.SkullCavernTempSlope, MineShaft.bottomOfMineLevel, DefaultConsts.EnvTemp);
+                        break;
+                    case >= MineShaft.mineLavaLevel:
+                        ModEntry.PlayerData.EnvTemp =
+                        StraightThroughPoint(Game1.CurrentMineLevel, DefaultConsts.LavaMineTempSlope, MineShaft.mineLavaLevel, DefaultConsts.EnvTemp);
+                        break;
+                    case >= MineShaft.mineFrostLevel:
+                        ModEntry.PlayerData.EnvTemp =
+                        ParabolaWithCentralExtremum(Game1.CurrentMineLevel, DefaultConsts.MinFrostMineTemp, DefaultConsts.MaxFrostMineTemp, MineShaft.mineFrostLevel, MineShaft.mineLavaLevel);
+                        break;
+                    case > MineShaft.upperArea:
+                        ModEntry.PlayerData.EnvTemp =
+                        ParabolaWithCentralExtremum(Game1.CurrentMineLevel, DefaultConsts.MaxUpperMineTemp, DefaultConsts.MinUpperMineTemp, MineShaft.upperArea, MineShaft.mineFrostLevel);
+                        break;
+                }
+            }
+            else if (!location.IsOutdoors)
+            {
+                float indoorModifier;
+                if (location.IsFarm)
+                    indoorModifier = (DefaultConsts.EnvTemp - ModEntry.PlayerData.EnvTemp) * ModEntry.Config.FarmIndoorTemperatureMultiplier;
+                else
+                    indoorModifier = (DefaultConsts.EnvTemp - ModEntry.PlayerData.EnvTemp) * ModEntry.Config.IndoorTemperatureMultiplier;
+                ModEntry.PlayerData.EnvTemp += indoorModifier;
             }
 
             // custom locatin temperature modifiers
