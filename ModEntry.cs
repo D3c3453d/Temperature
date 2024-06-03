@@ -57,7 +57,8 @@ namespace Temperature
         {
             if (!Context.IsPlayerFree || !Context.IsWorldReady || Game1.paused)
                 return;
-            EnvTempController.Update();
+            PlayerData.EnvTemp = EnvTempController.Update();
+            LogHelper.Warn("EnvTemp: " + PlayerData.EnvTemp.ToString());
             BodyTempController.Update();
         }
 
