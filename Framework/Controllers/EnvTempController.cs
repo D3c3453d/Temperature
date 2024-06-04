@@ -103,7 +103,7 @@ namespace Temperature.Framework.Controllers
             fluctuationScale += envData.FluctuationScale;
         }
 
-        private static void ApplyMines(ref float envTemp, ref EnvModifiers envData, int currentMineLevel)
+        private static void ApplyMines(ref float envTemp, int currentMineLevel)
         {
             switch (currentMineLevel)
             {
@@ -127,7 +127,6 @@ namespace Temperature.Framework.Controllers
                     ParabolaWithCentralExtremum(currentMineLevel, DefaultConsts.MaxUpperMineTemp, DefaultConsts.MinUpperMineTemp, MineShaft.upperArea, MineShaft.mineFrostLevel);
                     break;
             }
-            envData.DayCycleScale = 0;
         }
 
         private static void ApplyLocation(ref float envTemp, GameLocation location, int totalDays, int currentMineLevel)
@@ -137,7 +136,10 @@ namespace Temperature.Framework.Controllers
 
             // default location temperature modifiers
             if (location.Name == DefaultConsts.MineName + currentMineLevel)
-                ApplyMines(ref envTemp, ref envData, currentMineLevel);
+            {
+                ApplyMines(ref envTemp, currentMineLevel);
+                envData.DayCycleScale = 0;
+            }
             else if (!location.IsOutdoors)
             {
                 float indoorModifier;
