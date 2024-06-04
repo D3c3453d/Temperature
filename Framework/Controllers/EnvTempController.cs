@@ -57,7 +57,7 @@ namespace Temperature.Framework.Controllers
             return (maxTemp - minTemp) / 2 * MathF.Sin((totalDays - WorldDate.DaysPerMonth / 2) * MathF.PI / (2 * WorldDate.DaysPerMonth)) + (maxTemp + minTemp) / 2;
         }
 
-        private static float ApplySeasonCycleTemp(float envTemp, EnvModifiers envData, int totalDays)
+        private static void ApplySeasonCycleTemp(ref float envTemp, EnvModifiers envData, int totalDays)
         {
             switch (envData.MinValue, envData.MaxValue)
             {
@@ -71,10 +71,9 @@ namespace Temperature.Framework.Controllers
                     envTemp = SeasonCycleTemp(envData.MaxValue, envData.MaxValue, totalDays);
                     break;
             }
-            return envTemp;
         }
 
-        private static float ApplySeason(float envTemp, GameLocation location, int totalDays, string farmSeason)
+        private static void ApplySeason(ref float envTemp, GameLocation location, int totalDays, string farmSeason)
         {
             // season temperature modifiers
             string season = location.GetSeason().ToString();
@@ -83,63 +82,62 @@ namespace Temperature.Framework.Controllers
             EnvModifiers envData = DataController.Seasons.Data.GetValueOrDefault(season) ??
                 new EnvModifiers(DefaultConsts.MaxSeasonTemp, DefaultConsts.MinSeasonTemp);
 
-            envTemp = ApplySeasonCycleTemp(envTemp, envData, totalDays);
+            ApplySeasonCycleTemp(ref envTemp, envData, totalDays);
             envTemp += envData.Additive;
             envTemp *= envData.Multiplicative;
             dayCycleScale += envData.DayCycleScale;
             fluctuationScale += envData.FluctuationScale;
-
-            return envTemp;
         }
 
-        private static float ApplyWeather(float envTemp, GameLocation location, int totalDays)
+        private static void ApplyWeather(ref float envTemp, GameLocation location, int totalDays)
         {
             // weather temperature modifiers
 
             string weather = location.GetWeather().Weather;
             EnvModifiers envData = DataController.Weather.Data.GetValueOrDefault(weather) ?? new EnvModifiers();
 
-            envTemp = ApplySeasonCycleTemp(envTemp, envData, totalDays);
+            ApplySeasonCycleTemp(ref envTemp, envData, totalDays);
             envTemp += envData.Additive;
             envTemp *= envData.Multiplicative;
             dayCycleScale += envData.DayCycleScale;
             fluctuationScale += envData.FluctuationScale;
-
-            return envTemp;
         }
 
-        private static float ApplyLocation(float envTemp, GameLocation location, int totalDays, int currentMineLevel)
+        private static void ApplyMines(ref float envTemp, ref EnvModifiers envData, int currentMineLevel)
+        {
+            switch (currentMineLevel)
+            {
+                case MineShaft.quarryMineShaft:
+                    envTemp = DefaultConsts.EnvTemp;
+                    break;
+                case >= MineShaft.bottomOfMineLevel:
+                    envTemp =
+                    StraightThroughPoint(currentMineLevel, DefaultConsts.SkullCaveTempSlope, MineShaft.bottomOfMineLevel, DefaultConsts.EnvTemp);
+                    break;
+                case >= MineShaft.mineLavaLevel:
+                    envTemp =
+                    StraightThroughPoint(currentMineLevel, DefaultConsts.LavaMineTempSlope, MineShaft.mineLavaLevel, DefaultConsts.EnvTemp);
+                    break;
+                case >= MineShaft.mineFrostLevel:
+                    envTemp =
+                    ParabolaWithCentralExtremum(currentMineLevel, DefaultConsts.MinFrostMineTemp, DefaultConsts.MaxFrostMineTemp, MineShaft.mineFrostLevel, MineShaft.mineLavaLevel);
+                    break;
+                case > MineShaft.upperArea:
+                    envTemp =
+                    ParabolaWithCentralExtremum(currentMineLevel, DefaultConsts.MaxUpperMineTemp, DefaultConsts.MinUpperMineTemp, MineShaft.upperArea, MineShaft.mineFrostLevel);
+                    break;
+            }
+            envData.DayCycleScale = 0;
+        }
+
+        private static void ApplyLocation(ref float envTemp, GameLocation location, int totalDays, int currentMineLevel)
         {
             var envData = DataController.Locations.Data.GetValueOrDefault(location.Name) ??
                 new EnvModifiers(DefaultConsts.AbsoluteZero, DefaultConsts.AbsoluteZero, DefaultConsts.DayCycleScale, DefaultConsts.FluctuationScale);
 
             // default location temperature modifiers
             if (location.Name == DefaultConsts.MineName + currentMineLevel)
-            {
-                switch (currentMineLevel)
-                {
-                    case MineShaft.quarryMineShaft:
-                        envTemp = DefaultConsts.EnvTemp;
-                        break;
-                    case >= MineShaft.bottomOfMineLevel:
-                        envTemp =
-                        StraightThroughPoint(currentMineLevel, DefaultConsts.SkullCaveTempSlope, MineShaft.bottomOfMineLevel, DefaultConsts.EnvTemp);
-                        break;
-                    case >= MineShaft.mineLavaLevel:
-                        envTemp =
-                        StraightThroughPoint(currentMineLevel, DefaultConsts.LavaMineTempSlope, MineShaft.mineLavaLevel, DefaultConsts.EnvTemp);
-                        break;
-                    case >= MineShaft.mineFrostLevel:
-                        envTemp =
-                        ParabolaWithCentralExtremum(currentMineLevel, DefaultConsts.MinFrostMineTemp, DefaultConsts.MaxFrostMineTemp, MineShaft.mineFrostLevel, MineShaft.mineLavaLevel);
-                        break;
-                    case > MineShaft.upperArea:
-                        envTemp =
-                        ParabolaWithCentralExtremum(currentMineLevel, DefaultConsts.MaxUpperMineTemp, DefaultConsts.MinUpperMineTemp, MineShaft.upperArea, MineShaft.mineFrostLevel);
-                        break;
-                }
-                envData.DayCycleScale = 0;
-            }
+                ApplyMines(ref envTemp, ref envData, currentMineLevel);
             else if (!location.IsOutdoors)
             {
                 float indoorModifier;
@@ -151,16 +149,14 @@ namespace Temperature.Framework.Controllers
             }
 
             // custom locatin temperature modifiers
-            envTemp = ApplySeasonCycleTemp(envTemp, envData, totalDays);
+            ApplySeasonCycleTemp(ref envTemp, envData, totalDays);
             envTemp += envData.Additive;
             envTemp *= envData.Multiplicative;
             dayCycleScale += envData.DayCycleScale;
             fluctuationScale += envData.FluctuationScale;
-
-            return envTemp;
         }
 
-        private static float ApplyObjects(float envTemp, GameLocation location, float playerTileX, float playerTileY)
+        private static void ApplyObjects(ref float envTemp, GameLocation location, float playerTileX, float playerTileY)
         {
             // local temperature emitted by objects
 
@@ -196,11 +192,9 @@ namespace Temperature.Framework.Controllers
                         }
                     }
                 }
-
-            return envTemp;
         }
 
-        private static float ApplyAmbient(float envTemp, GameLocation location)
+        private static void ApplyAmbient(ref float envTemp, GameLocation location)
         {
             // ambient by temperature control objects
 
@@ -245,16 +239,12 @@ namespace Temperature.Framework.Controllers
                 }
                 envTemp += 0.5f * power / area;
             }
-
-            return envTemp;
         }
 
-        private static float ApplyDayCycle(float envTemp, int timeOfDay)
+        private static void ApplyDayCycle(ref float envTemp, int timeOfDay)
         {
             float hours = timeOfDay / 100 + timeOfDay % 100 / 60.0f; // converting ingame "digital clock" time to irl hours with floating point
             envTemp += MathF.Sin((hours - DefaultConsts.DayCycleOffset) * MathF.PI / DefaultConsts.DayCycleStretch) * dayCycleScale;
-
-            return envTemp;
         }
 
         public static float Update()
@@ -267,11 +257,11 @@ namespace Temperature.Framework.Controllers
             GameLocation location = Game1.player.currentLocation;
             if (location != null)
             {
-                envTemp = ApplySeason(envTemp, location, Game1.Date.TotalDays, Game1.getFarm().GetSeason().ToString());
-                envTemp = ApplyWeather(envTemp, location, Game1.Date.TotalDays);
-                envTemp = ApplyLocation(envTemp, location, Game1.Date.TotalDays, Game1.CurrentMineLevel);
-                envTemp = ApplyObjects(envTemp, location, PixelToTile(Game1.player.GetBoundingBox().Center.X), PixelToTile(Game1.player.GetBoundingBox().Center.Y));
-                envTemp = ApplyAmbient(envTemp, location);
+                ApplySeason(ref envTemp, location, Game1.Date.TotalDays, Game1.getFarm().GetSeason().ToString());
+                ApplyWeather(ref envTemp, location, Game1.Date.TotalDays);
+                ApplyLocation(ref envTemp, location, Game1.Date.TotalDays, Game1.CurrentMineLevel);
+                ApplyObjects(ref envTemp, location, PixelToTile(Game1.player.GetBoundingBox().Center.X), PixelToTile(Game1.player.GetBoundingBox().Center.Y));
+                ApplyAmbient(ref envTemp, location);
             }
             else
             {
@@ -280,7 +270,7 @@ namespace Temperature.Framework.Controllers
                 dayCycleScale = 0;
             }
 
-            envTemp = ApplyDayCycle(envTemp, Game1.timeOfDay);
+            ApplyDayCycle(ref envTemp, Game1.timeOfDay);
             envTemp += fluctuation;
 
             return envTemp;
