@@ -3,7 +3,7 @@ using StardewModdingAPI;
 
 namespace Temperature.Framework.Misc
 {
-    public class AssetHelper
+    public static class AssetHelper
     {
         private const string AssetFolderName = "Assets";
 
@@ -18,7 +18,7 @@ namespace Temperature.Framework.Misc
                                 toTheCustom ? DataConstants.CustomDataFolderName : DataConstants.BaseGameDataFolderName);
         }
 
-        public class BarsConstants
+        public static class BarsConstants
         {
             internal const string BarAssetsFolderName = "Bars";
 
@@ -27,7 +27,7 @@ namespace Temperature.Framework.Misc
             public const string BodyTempBarAssetFileName = "BodyTemp_Sprite.png";
         }
 
-        public class DataConstants
+        public static class DataConstants
         {
             internal const string DataAssetsFolderName = "Data";
 
