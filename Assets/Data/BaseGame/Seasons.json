@@ -1,7 +1,7 @@
 {
     "Full": 
     {
-        "MaxValue": 30,
+        "MaxValue": 27,
         "MinValue": -10
     },
     "Spring": 
@@ -11,7 +11,7 @@
     },
     "Summer": 
     {
-        "MaxValue": 30,
+        "MaxValue": 27,
         "MinValue": 15
     },
     "Fall": 

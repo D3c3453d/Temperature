@@ -43,5 +43,79 @@ namespace Temperature.Framework.Controllers
                     ObjectsMaxEffectiveRange = obj.Value.EffectiveRange;
             }
         }
+
+        public static ClothModifiers GetClothingData(string clothingName, string type = "")
+        {
+            if (clothingName == null) return null;
+            return type switch
+            {
+                "Hat" => GetDataByIteration(clothingName, Clothes.Data.GetValueOrDefault(type)),
+                "Shirt" => GetDataByIteration(clothingName, Clothes.Data.GetValueOrDefault(type)),
+                "Pants" => GetDataByIteration(clothingName, Clothes.Data.GetValueOrDefault(type)),
+                "Boots" => GetDataByIteration(clothingName, Clothes.Data.GetValueOrDefault(type)),
+                _ => null,
+            };
+        }
+
+        private static ClothModifiers GetDataByIteration(string clothingName, Dictionary<string, ClothModifiers> data)
+        {
+            LogHelper.Info($"clothingName {clothingName}");
+            if (clothingName == null) return null;
+            ClothModifiers res = null;
+            foreach (var x in data)
+            {
+                switch (x.Value.Pattern)
+                {
+                    case "match":
+                        if (clothingName.Equals(x.Key))
+                        {
+                            res = x.Value;
+                            LogHelper.Info($"match {x.Key}");
+                        }
+                        break;
+                    case "prefix":
+                        if (clothingName.StartsWith(x.Key))
+                        {
+                            res = x.Value;
+                            LogHelper.Info($"prefix {x.Key}");
+                        }
+                        break;
+                    case "postfix":
+                        if (clothingName.EndsWith(x.Key))
+                        {
+                            res = x.Value;
+                            LogHelper.Info($"postfix {x.Key}");
+                        }
+                        break;
+                    case "contain":
+                        if (clothingName.Contains(x.Key))
+                        {
+                            res = x.Value;
+                            LogHelper.Info($"contain {x.Key}");
+                        }
+                        break;
+                }
+            }
+            return res;
+        }
+
+        public static EnvModifiers UpdateSeasonData(string currentSeason, string farmSeason)
+        {
+            if (currentSeason == farmSeason) currentSeason = DefaultConsts.FullSeasonName;
+
+            return Seasons.Data.GetValueOrDefault(currentSeason) ??
+                new EnvModifiers(DefaultConsts.MaxSeasonTemp, DefaultConsts.MinSeasonTemp);
+        }
+
+        public static EnvModifiers UpdateWeatherData(string weather)
+        {
+            return Weather.Data.GetValueOrDefault(weather) ?? new EnvModifiers();
+        }
+
+        public static EnvModifiers UpdateLocationData(string locationName)
+        {
+            return Locations.Data.GetValueOrDefault(locationName) ??
+                new EnvModifiers(DefaultConsts.AbsoluteZero, DefaultConsts.AbsoluteZero, DefaultConsts.DayCycleScale, DefaultConsts.FluctuationScale);
+        }
     }
 }
