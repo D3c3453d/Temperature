@@ -7,23 +7,13 @@ namespace Temperature.Framework.Controllers
 {
     public static class BodyTempController
     {
-        public static float Update(float bodyTemp, float envTemp)
+        public static float Update(float bodyTemp, float envTemp, ClothesModifiers hatData, ClothesModifiers shirtData, ClothesModifiers pantsData, ClothesModifiers bootsData)
         {
             float resultTemp = 0;
-            string hat_name = "", shirt_name = "", pants_name = "", boots_name = "";
-            if (Game1.player.hat.Value != null) hat_name = Game1.player.hat.Value.Name;
-            if (Game1.player.shirtItem.Value != null) shirt_name = Game1.player.shirtItem.Value.Name;
-            if (Game1.player.pantsItem.Value != null) pants_name = Game1.player.pantsItem.Value.Name;
-            if (Game1.player.boots.Value != null) boots_name = Game1.player.boots.Value.Name;
-            var hatData = DataController.GetClothingData(hat_name, "Hat") ?? new ClothModifiers();
-            var shirtData = DataController.GetClothingData(shirt_name, "Shirt") ?? new ClothModifiers();
-            var pantsData = DataController.GetClothingData(pants_name, "Pants") ?? new ClothModifiers();
-            var bootsData = DataController.GetClothingData(boots_name, "Boots") ?? new ClothModifiers();
-
-            // LogHelper.Error($"hatData   {hatData.ColdResistance} {hatData.HeatResistance}");
-            // LogHelper.Error($"shirtData {shirtData.ColdResistance} {shirtData.HeatResistance}");
-            // LogHelper.Error($"pantsData {pantsData.ColdResistance} {pantsData.HeatResistance}");
-            // LogHelper.Error($"bootsData {bootsData.ColdResistance} {bootsData.HeatResistance}");
+            LogHelper.Debug($"hatData   {hatData.ColdResistance} {hatData.HeatResistance}");
+            LogHelper.Debug($"shirtData {shirtData.ColdResistance} {shirtData.HeatResistance}");
+            LogHelper.Debug($"pantsData {pantsData.ColdResistance} {pantsData.HeatResistance}");
+            LogHelper.Debug($"bootsData {bootsData.ColdResistance} {bootsData.HeatResistance}");
 
             float totalColdResistance = hatData.ColdResistance + shirtData.ColdResistance + pantsData.ColdResistance + bootsData.ColdResistance;
             float totalHeatResistance = hatData.HeatResistance + shirtData.HeatResistance + pantsData.HeatResistance + bootsData.HeatResistance;
@@ -42,10 +32,9 @@ namespace Temperature.Framework.Controllers
             }
 
             bodyTemp += (resultTemp - bodyTemp) / 10;
-            // LogHelper.Alert($"minComfyTemp {minComfyTemp}");
-            // LogHelper.Alert($"maxComfyTemp {maxComfyTemp}");
-            // LogHelper.Alert($"resultTemp {resultTemp}");
-            // LogHelper.Alert($"bodyTemp {bodyTemp}");
+            LogHelper.Alert($"minComfyTemp {minComfyTemp}");
+            LogHelper.Alert($"maxComfyTemp {maxComfyTemp}");
+            LogHelper.Alert($"resultBodyTemp {resultTemp}");
             return bodyTemp;
         }
     }

@@ -192,28 +192,28 @@ namespace Temperature.Framework.Controllers
             float envTemp = 0;
             dayCycleScale = 0;
             fluctuationScale = 0;
-            LogHelper.Alert($"seasonData {seasonData.MinValue} {seasonData.MaxValue} {seasonData.DayCycleScale} {seasonData.FluctuationScale} {seasonData.Additive} {seasonData.Multiplicative}");
-            LogHelper.Alert($"weatherData {weatherData.MinValue} {weatherData.MaxValue} {weatherData.DayCycleScale} {weatherData.FluctuationScale} {weatherData.Additive} {weatherData.Multiplicative}");
-            LogHelper.Alert($"locationData {locationData.MinValue} {locationData.MaxValue} {locationData.DayCycleScale} {locationData.FluctuationScale} {locationData.Additive} {locationData.Multiplicative}");
+            LogHelper.Debug($"seasonData {seasonData.MinValue} {seasonData.MaxValue} {seasonData.DayCycleScale} {seasonData.FluctuationScale} {seasonData.Additive} {seasonData.Multiplicative}");
+            LogHelper.Debug($"weatherData {weatherData.MinValue} {weatherData.MaxValue} {weatherData.DayCycleScale} {weatherData.FluctuationScale} {weatherData.Additive} {weatherData.Multiplicative}");
+            LogHelper.Debug($"locationData {locationData.MinValue} {locationData.MaxValue} {locationData.DayCycleScale} {locationData.FluctuationScale} {locationData.Additive} {locationData.Multiplicative}");
 
             float oldTemp = envTemp;
             if (location != null)
             {
                 ApplyEnvData(ref envTemp, seasonData, totalDays); // apply season
-                LogHelper.Error($"season income {envTemp - oldTemp}");
+                LogHelper.Debug($"season income {envTemp - oldTemp}");
                 oldTemp = envTemp;
                 ApplyEnvData(ref envTemp, weatherData, totalDays); // apply weather
-                LogHelper.Error($"weather income {envTemp - oldTemp}");
+                LogHelper.Debug($"weather income {envTemp - oldTemp}");
                 oldTemp = envTemp;
                 ApplyLocation(ref envTemp, locationData, location, totalDays, currentMineLevel); // apply location
-                LogHelper.Error($"loc income {envTemp - oldTemp}");
+                LogHelper.Debug($"loc income {envTemp - oldTemp}");
                 oldTemp = envTemp;
 
                 ApplyObjects(ref envTemp, location, CalcHelper.PixelToTile(playerAbsoluteX), CalcHelper.PixelToTile(playerAbsoluteY));
-                LogHelper.Error($"objects income {envTemp - oldTemp}");
+                LogHelper.Debug($"objects income {envTemp - oldTemp}");
                 oldTemp = envTemp;
                 ApplyAmbient(ref envTemp, location);
-                LogHelper.Error($"ambient income {envTemp - oldTemp}");
+                LogHelper.Debug($"ambient income {envTemp - oldTemp}");
                 oldTemp = envTemp;
             }
             else
@@ -221,15 +221,15 @@ namespace Temperature.Framework.Controllers
                 envTemp = DefaultConsts.EnvTemp;
                 fluctuationScale = 0;
                 dayCycleScale = 0;
-                LogHelper.Error($"null income {envTemp - oldTemp}");
+                LogHelper.Debug($"null income {envTemp - oldTemp}");
                 oldTemp = envTemp;
             }
 
             ApplyDayCycle(ref envTemp, Game1.timeOfDay);
-            LogHelper.Error($"day cycle income {envTemp - oldTemp}");
+            LogHelper.Debug($"day cycle income {envTemp - oldTemp}");
             oldTemp = envTemp;
             envTemp += fluctuation;
-            LogHelper.Error($"fluc income {envTemp - oldTemp}");
+            LogHelper.Debug($"fluc income {envTemp - oldTemp}");
 
             return envTemp;
         }

@@ -1,6 +1,7 @@
 using StardewModdingAPI;
 using Temperature.Framework.Misc;
 using Temperature.Framework.Data;
+using StardewValley;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Temperature.Framework.Controllers
         public static GenericData<EnvModifiers> Seasons { get; set; } = new();
         public static GenericData<EnvModifiers> Weather { get; set; } = new();
         public static GenericData<EnvModifiers> Locations { get; set; } = new();
-        public static GenericData<Dictionary<string, ClothModifiers>> Clothes { get; set; } = new();
+        public static GenericData<Dictionary<string, ClothesModifiers>> Clothes { get; set; } = new();
         public static GenericData<ObjectModifiers> Objects { get; set; } = new();
         public static float ObjectsMaxEffectiveRange = 0;
         public static void LoadData()
@@ -44,7 +45,7 @@ namespace Temperature.Framework.Controllers
             }
         }
 
-        public static ClothModifiers GetClothingData(string clothingName, string type = "")
+        private static ClothesModifiers GetClothesData(string clothingName, string type = "")
         {
             if (clothingName == null) return null;
             return type switch
@@ -57,11 +58,11 @@ namespace Temperature.Framework.Controllers
             };
         }
 
-        private static ClothModifiers GetDataByIteration(string clothingName, Dictionary<string, ClothModifiers> data)
+        private static ClothesModifiers GetDataByIteration(string clothingName, Dictionary<string, ClothesModifiers> data)
         {
             LogHelper.Info($"clothingName {clothingName}");
             if (clothingName == null) return null;
-            ClothModifiers res = null;
+            ClothesModifiers res = null;
             foreach (var x in data)
             {
                 switch (x.Value.Pattern)
@@ -97,6 +98,38 @@ namespace Temperature.Framework.Controllers
                 }
             }
             return res;
+        }
+
+        public static ClothesModifiers UpdateHatData(StardewValley.Objects.Hat hat)
+        {
+            if (hat != null)
+                return GetClothesData(Game1.player.hat.Value.Name, "Hat") ?? new ClothesModifiers();
+            else
+                return new ClothesModifiers();
+        }
+
+        public static ClothesModifiers UpdateShirtData(StardewValley.Objects.Clothing shirt)
+        {
+            if (shirt != null)
+                return GetClothesData(Game1.player.hat.Value.Name, "Shirt") ?? new ClothesModifiers();
+            else
+                return new ClothesModifiers();
+        }
+
+        public static ClothesModifiers UpdatePantsData(StardewValley.Objects.Clothing pants)
+        {
+            if (pants != null)
+                return GetClothesData(Game1.player.hat.Value.Name, "Pants") ?? new ClothesModifiers();
+            else
+                return new ClothesModifiers();
+        }
+
+        public static ClothesModifiers UpdateBootsData(StardewValley.Objects.Boots boots)
+        {
+            if (boots != null)
+                return GetClothesData(Game1.player.hat.Value.Name, "Boots") ?? new ClothesModifiers();
+            else
+                return new ClothesModifiers();
         }
 
         public static EnvModifiers UpdateSeasonData(string currentSeason, string farmSeason)

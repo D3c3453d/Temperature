@@ -53,22 +53,22 @@ namespace Temperature
 
         private void OnBootsChange(NetRef<Boots> field, Boots oldValue, Boots newValue)
         {
-            LogHelper.Debug($"Boots changed {oldValue} -> {newValue}");
+            PlayerData.CurrentBootsData = DataController.UpdateBootsData(newValue);
         }
 
         private void OnPantsItemChange(NetRef<Clothing> field, Clothing oldValue, Clothing newValue)
         {
-            LogHelper.Debug($"Pants changed {oldValue} -> {newValue}");
+            PlayerData.CurrentPantsData = DataController.UpdatePantsData(newValue);
         }
 
         private void OnShirtItemChange(NetRef<Clothing> field, Clothing oldValue, Clothing newValue)
         {
-            LogHelper.Debug($"Shirt changed {oldValue} -> {newValue}");
+            PlayerData.CurrentShirtData = DataController.UpdateShirtData(newValue);
         }
 
         private void OnHatChange(NetRef<Hat> field, Hat oldValue, Hat newValue)
         {
-            LogHelper.Debug($"Hat changed {oldValue} -> {newValue}");
+            PlayerData.CurrentHatData = DataController.UpdateHatData(newValue);
         }
 
         private void OnGameLaunch(object sender, GameLaunchedEventArgs e)
@@ -95,7 +95,7 @@ namespace Temperature
         {
             if (!Context.IsPlayerFree || !Context.IsWorldReady || Game1.paused)
                 return;
-            PlayerData.BodyTemp = BodyTempController.Update(PlayerData.BodyTemp, PlayerData.EnvTemp);
+
             Game1.player.hat.fieldChangeVisibleEvent += OnHatChange;
             Game1.player.shirtItem.fieldChangeVisibleEvent += OnShirtItemChange;
             Game1.player.pantsItem.fieldChangeVisibleEvent += OnPantsItemChange;
@@ -105,6 +105,10 @@ namespace Temperature
             PlayerData.CurrentWeatherData, PlayerData.CurrentLocationData, Game1.player.currentLocation,
             Game1.player.GetBoundingBox().Center.X, Game1.player.GetBoundingBox().Center.Y, Game1.Date.TotalDays, Game1.CurrentMineLevel);
             LogHelper.Warn($"EnvTemp: {PlayerData.EnvTemp}");
+
+            PlayerData.BodyTemp = BodyTempController.Update(PlayerData.BodyTemp, PlayerData.EnvTemp,
+                PlayerData.CurrentHatData, PlayerData.CurrentShirtData, PlayerData.CurrentPantsData, PlayerData.CurrentBootsData);
+            LogHelper.Warn($"BodyTemp: {PlayerData.BodyTemp}");
         }
 
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
@@ -119,6 +123,11 @@ namespace Temperature
             PlayerData.CurrentSeasonData = DataController.UpdateSeasonData(Game1.player.currentLocation.GetSeason().ToString(), Game1.getFarm().GetSeason().ToString());
             PlayerData.CurrentWeatherData = DataController.UpdateWeatherData(Game1.player.currentLocation.GetWeather().Weather);
             PlayerData.CurrentLocationData = DataController.UpdateLocationData(Game1.player.currentLocation.Name);
+
+            PlayerData.CurrentHatData = DataController.UpdateHatData(Game1.player.hat.Value);
+            PlayerData.CurrentShirtData = DataController.UpdateShirtData(Game1.player.shirtItem.Value);
+            PlayerData.CurrentPantsData = DataController.UpdatePantsData(Game1.player.pantsItem.Value);
+            PlayerData.CurrentBootsData = DataController.UpdateBootsData(Game1.player.boots.Value);
         }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -128,12 +137,30 @@ namespace Temperature
             PlayerData.CurrentSeasonData = DataController.UpdateSeasonData(Game1.player.currentLocation.GetSeason().ToString(), Game1.getFarm().GetSeason().ToString());
             PlayerData.CurrentWeatherData = DataController.UpdateWeatherData(Game1.player.currentLocation.GetWeather().Weather);
             PlayerData.CurrentLocationData = DataController.UpdateLocationData(Game1.player.currentLocation.Name);
+
+            PlayerData.CurrentHatData = DataController.UpdateHatData(Game1.player.hat.Value);
+            PlayerData.CurrentShirtData = DataController.UpdateShirtData(Game1.player.shirtItem.Value);
+            PlayerData.CurrentPantsData = DataController.UpdatePantsData(Game1.player.pantsItem.Value);
+            PlayerData.CurrentBootsData = DataController.UpdateBootsData(Game1.player.boots.Value);
+
         }
 
-        private void OnPlayerConnected(object sender, PeerConnectedEventArgs e) =>
+        private void OnPlayerConnected(object sender, PeerConnectedEventArgs e)
+        {
             NetController.SyncSpecificPlayer(e.Peer.PlayerID);
+        }
 
-        private void OnMessageReceived(object sender, ModMessageReceivedEventArgs e) =>
+        private void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)
+        {
             NetController.OnMessageReceived(e);
+            PlayerData.CurrentSeasonData = DataController.UpdateSeasonData(Game1.player.currentLocation.GetSeason().ToString(), Game1.getFarm().GetSeason().ToString());
+            PlayerData.CurrentWeatherData = DataController.UpdateWeatherData(Game1.player.currentLocation.GetWeather().Weather);
+            PlayerData.CurrentLocationData = DataController.UpdateLocationData(Game1.player.currentLocation.Name);
+
+            PlayerData.CurrentHatData = DataController.UpdateHatData(Game1.player.hat.Value);
+            PlayerData.CurrentShirtData = DataController.UpdateShirtData(Game1.player.shirtItem.Value);
+            PlayerData.CurrentPantsData = DataController.UpdatePantsData(Game1.player.pantsItem.Value);
+            PlayerData.CurrentBootsData = DataController.UpdateBootsData(Game1.player.boots.Value);
+        }
     }
 }

@@ -125,14 +125,14 @@ namespace Temperature.Framework.Controllers
         public Dictionary<string, EnvModifiers> seasons;
         public Dictionary<string, EnvModifiers> weather;
         public Dictionary<string, EnvModifiers> locations;
-        public Dictionary<string, Dictionary<string, ClothModifiers>> clothes;
+        public Dictionary<string, Dictionary<string, ClothesModifiers>> clothes;
         public Dictionary<string, ObjectModifiers> objects;
 
         public SyncBody(PlayerData _playerData,
             Dictionary<string, EnvModifiers> _seasons,
             Dictionary<string, EnvModifiers> _weather,
             Dictionary<string, EnvModifiers> _locations,
-            Dictionary<string, Dictionary<string, ClothModifiers>> _clothes,
+            Dictionary<string, Dictionary<string, ClothesModifiers>> _clothes,
             Dictionary<string, ObjectModifiers> _objects)
         {
             playerData = _playerData;
