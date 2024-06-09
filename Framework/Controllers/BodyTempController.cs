@@ -1,55 +1,52 @@
+using System;
+using System.Collections.Generic;
+using StardewValley;
 using Temperature.Framework.Data;
+using Temperature.Framework.Misc;
 namespace Temperature.Framework.Controllers
 {
     public static class BodyTempController
     {
-        public static void Update()
+        public static float Update(float bodyTemp, float envTemp)
         {
-            //LogHelper.Debug($"{MinComfortTemp} {MaxComfortTemp}");
-            float envTempVal = ModEntry.PlayerData.EnvTemp;
-            float targetBodyTemp = ModEntry.PlayerData.BodyTemp;
-            //currently follow a segmented linear function (adjust to look good on desmos xd)
-            if (envTempVal > ModEntry.PlayerData.MaxComfyTemp)
+            float resultTemp = 0;
+            string hat_name = "", shirt_name = "", pants_name = "", boots_name = "";
+            if (Game1.player.hat.Value != null) hat_name = Game1.player.hat.Value.Name;
+            if (Game1.player.shirtItem.Value != null) shirt_name = Game1.player.shirtItem.Value.Name;
+            if (Game1.player.pantsItem.Value != null) pants_name = Game1.player.pantsItem.Value.Name;
+            if (Game1.player.boots.Value != null) boots_name = Game1.player.boots.Value.Name;
+            var hatData = DataController.GetClothingData(hat_name, "Hat") ?? new ClothModifiers();
+            var shirtData = DataController.GetClothingData(shirt_name, "Shirt") ?? new ClothModifiers();
+            var pantsData = DataController.GetClothingData(pants_name, "Pants") ?? new ClothModifiers();
+            var bootsData = DataController.GetClothingData(boots_name, "Boots") ?? new ClothModifiers();
+
+            // LogHelper.Error($"hatData   {hatData.ColdResistance} {hatData.HeatResistance}");
+            // LogHelper.Error($"shirtData {shirtData.ColdResistance} {shirtData.HeatResistance}");
+            // LogHelper.Error($"pantsData {pantsData.ColdResistance} {pantsData.HeatResistance}");
+            // LogHelper.Error($"bootsData {bootsData.ColdResistance} {bootsData.HeatResistance}");
+
+            float totalColdResistance = hatData.ColdResistance + shirtData.ColdResistance + pantsData.ColdResistance + bootsData.ColdResistance;
+            float totalHeatResistance = hatData.HeatResistance + shirtData.HeatResistance + pantsData.HeatResistance + bootsData.HeatResistance;
+            float defaultAvgComfyTemp = (DefaultConsts.MinComfyTemp + DefaultConsts.MaxComfyTemp) / 2;
+
+            float minComfyTemp = defaultAvgComfyTemp + (DefaultConsts.MinComfyTemp - defaultAvgComfyTemp) * (totalColdResistance + 1);
+            float maxComfyTemp = defaultAvgComfyTemp + (DefaultConsts.MaxComfyTemp - defaultAvgComfyTemp) * (totalHeatResistance + 1);
+
+            if (envTemp >= maxComfyTemp)
             {
-                // if more than maximum comfort temp
-                targetBodyTemp = DefaultConsts.BodyTemp + DefaultConsts.HighTemperatureSlope * (envTempVal - ModEntry.PlayerData.MaxComfyTemp);
+                resultTemp = 2 * MathF.Atan((envTemp - maxComfyTemp) * MathF.PI / 30) / MathF.PI;
             }
-            else if (envTempVal < ModEntry.PlayerData.MinComfyTemp)
+            else if (envTemp <= minComfyTemp)
             {
-                // if more than maximum comfort temp
-                targetBodyTemp = DefaultConsts.BodyTemp + DefaultConsts.LowTemperatureSlope * (ModEntry.PlayerData.MinComfyTemp - envTempVal);
+                resultTemp = 2 * MathF.Atan((envTemp - minComfyTemp) * MathF.PI / 30) / MathF.PI;
             }
-            else
-            {
-                targetBodyTemp = DefaultConsts.BodyTemp;
-            }
-            //gradual temp change instead of abrupted
-            ModEntry.PlayerData.BodyTemp += (targetBodyTemp - ModEntry.PlayerData.BodyTemp) * DefaultConsts.TemperatureChangeEasing;
-            //Misc.LogHelper.Warn(ModEntry.PlayerData.BodyTemp.ToString());
+
+            bodyTemp += (resultTemp - bodyTemp) / 10;
+            // LogHelper.Alert($"minComfyTemp {minComfyTemp}");
+            // LogHelper.Alert($"maxComfyTemp {maxComfyTemp}");
+            // LogHelper.Alert($"resultTemp {resultTemp}");
+            // LogHelper.Alert($"bodyTemp {bodyTemp}");
+            return bodyTemp;
         }
-
-        // internal void updateComfortTemp(string hat_name, string shirt_name, string pants_name, string boots_name)
-        // {
-        //     double DefaultAvgComfortTemp = (DefaultMinComfortTemp + DefaultMaxComfortTemp) / 2;
-        //     double minComfortTempModifier = 1;
-        //     double maxComfortTempModifier = 1;
-
-        //     DataController.Clothes hatData = data.ClothingTempResistantDictionary.GetClothingData(hat_name, "hat");
-        //     data.ClothingTempResistantData shirtData = data.ClothingTempResistantDictionary.GetClothingData(shirt_name, "shirt");
-        //     data.ClothingTempResistantData pantsData = data.ClothingTempResistantDictionary.GetClothingData(pants_name, "pants");
-        //     data.ClothingTempResistantData bootsData = data.ClothingTempResistantDictionary.GetClothingData(boots_name, "boots");
-
-        //     minComfortTempModifier += ((hatData != null) ? hatData.coldInsulationModifier : 0)
-        //         + ((shirtData != null) ? shirtData.coldInsulationModifier : 0)
-        //         + ((pantsData != null) ? pantsData.coldInsulationModifier : 0)
-        //         + ((bootsData != null) ? bootsData.coldInsulationModifier : 0);
-        //     maxComfortTempModifier += ((hatData != null) ? hatData.heatInsulationModifier : 0)
-        //         + ((shirtData != null) ? shirtData.heatInsulationModifier : 0)
-        //         + ((pantsData != null) ? pantsData.heatInsulationModifier : 0)
-        //         + ((bootsData != null) ? bootsData.heatInsulationModifier : 0);
-
-        //     MinComfortTemp = DefaultAvgComfortTemp + (DefaultMinComfortTemp - DefaultAvgComfortTemp) * minComfortTempModifier;
-        //     MaxComfortTemp = DefaultAvgComfortTemp + (DefaultMaxComfortTemp - DefaultAvgComfortTemp) * maxComfortTempModifier;
-        // }
     }
 }
