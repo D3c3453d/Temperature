@@ -120,6 +120,7 @@ namespace Temperature
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             OnUpdateTicked(default, default);
+
             PlayerData.CurrentSeasonData = DataController.UpdateSeasonData(Game1.player.currentLocation.GetSeason().ToString(), Game1.getFarm().GetSeason().ToString());
             PlayerData.CurrentWeatherData = DataController.UpdateWeatherData(Game1.player.currentLocation.GetWeather().Weather);
             PlayerData.CurrentLocationData = DataController.UpdateLocationData(Game1.player.currentLocation.Name);
@@ -134,6 +135,7 @@ namespace Temperature
         {
             if (!NetController._firstLoad) NetController.Sync();
             NetController.Sync();
+
             PlayerData.CurrentSeasonData = DataController.UpdateSeasonData(Game1.player.currentLocation.GetSeason().ToString(), Game1.getFarm().GetSeason().ToString());
             PlayerData.CurrentWeatherData = DataController.UpdateWeatherData(Game1.player.currentLocation.GetWeather().Weather);
             PlayerData.CurrentLocationData = DataController.UpdateLocationData(Game1.player.currentLocation.Name);
@@ -148,11 +150,7 @@ namespace Temperature
         private void OnPlayerConnected(object sender, PeerConnectedEventArgs e)
         {
             NetController.SyncSpecificPlayer(e.Peer.PlayerID);
-        }
 
-        private void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)
-        {
-            NetController.OnMessageReceived(e);
             PlayerData.CurrentSeasonData = DataController.UpdateSeasonData(Game1.player.currentLocation.GetSeason().ToString(), Game1.getFarm().GetSeason().ToString());
             PlayerData.CurrentWeatherData = DataController.UpdateWeatherData(Game1.player.currentLocation.GetWeather().Weather);
             PlayerData.CurrentLocationData = DataController.UpdateLocationData(Game1.player.currentLocation.Name);
@@ -161,6 +159,11 @@ namespace Temperature
             PlayerData.CurrentShirtData = DataController.UpdateShirtData(Game1.player.shirtItem.Value);
             PlayerData.CurrentPantsData = DataController.UpdatePantsData(Game1.player.pantsItem.Value);
             PlayerData.CurrentBootsData = DataController.UpdateBootsData(Game1.player.boots.Value);
+        }
+
+        private void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)
+        {
+            NetController.OnMessageReceived(e);
         }
     }
 }
