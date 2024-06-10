@@ -103,7 +103,7 @@ namespace Temperature.Framework.Controllers
         public static ClothesModifiers UpdateHatData(StardewValley.Objects.Hat hat)
         {
             if (hat != null)
-                return GetClothesData(Game1.player.hat.Value.Name, "Hat") ?? new ClothesModifiers();
+                return GetClothesData(hat.Name, "Hat") ?? new ClothesModifiers();
             else
                 return new ClothesModifiers();
         }
@@ -111,7 +111,7 @@ namespace Temperature.Framework.Controllers
         public static ClothesModifiers UpdateShirtData(StardewValley.Objects.Clothing shirt)
         {
             if (shirt != null)
-                return GetClothesData(Game1.player.hat.Value.Name, "Shirt") ?? new ClothesModifiers();
+                return GetClothesData(shirt.Name, "Shirt") ?? new ClothesModifiers();
             else
                 return new ClothesModifiers();
         }
@@ -119,7 +119,7 @@ namespace Temperature.Framework.Controllers
         public static ClothesModifiers UpdatePantsData(StardewValley.Objects.Clothing pants)
         {
             if (pants != null)
-                return GetClothesData(Game1.player.hat.Value.Name, "Pants") ?? new ClothesModifiers();
+                return GetClothesData(pants.Name, "Pants") ?? new ClothesModifiers();
             else
                 return new ClothesModifiers();
         }
@@ -127,7 +127,7 @@ namespace Temperature.Framework.Controllers
         public static ClothesModifiers UpdateBootsData(StardewValley.Objects.Boots boots)
         {
             if (boots != null)
-                return GetClothesData(Game1.player.hat.Value.Name, "Boots") ?? new ClothesModifiers();
+                return GetClothesData(boots.Name, "Boots") ?? new ClothesModifiers();
             else
                 return new ClothesModifiers();
         }
