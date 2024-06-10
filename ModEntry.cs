@@ -27,7 +27,6 @@ namespace Temperature
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunch;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
-            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
             helper.Events.GameLoop.TimeChanged += OnTimeChanged;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
@@ -52,24 +51,16 @@ namespace Temperature
         }
 
         private void OnBootsChange(NetRef<Boots> field, Boots oldValue, Boots newValue)
-        {
-            PlayerData.CurrentBootsData = DataController.UpdateBootsData(newValue);
-        }
+            => PlayerData.CurrentBootsData = DataController.UpdateBootsData(newValue);
 
         private void OnPantsItemChange(NetRef<Clothing> field, Clothing oldValue, Clothing newValue)
-        {
-            PlayerData.CurrentPantsData = DataController.UpdatePantsData(newValue);
-        }
+            => PlayerData.CurrentPantsData = DataController.UpdatePantsData(newValue);
 
         private void OnShirtItemChange(NetRef<Clothing> field, Clothing oldValue, Clothing newValue)
-        {
-            PlayerData.CurrentShirtData = DataController.UpdateShirtData(newValue);
-        }
+            => PlayerData.CurrentShirtData = DataController.UpdateShirtData(newValue);
 
         private void OnHatChange(NetRef<Hat> field, Hat oldValue, Hat newValue)
-        {
-            PlayerData.CurrentHatData = DataController.UpdateHatData(newValue);
-        }
+            => PlayerData.CurrentHatData = DataController.UpdateHatData(newValue);
 
         private void OnGameLaunch(object sender, GameLaunchedEventArgs e)
         {
@@ -86,11 +77,6 @@ namespace Temperature
             NetController._firstLoad = false;
         }
 
-        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
-        {
-            if (!Context.IsPlayerFree || !Context.IsWorldReady || Game1.paused)
-                return;
-        }
         private void OnOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
         {
             if (!Context.IsPlayerFree || !Context.IsWorldReady || Game1.paused)
@@ -119,8 +105,6 @@ namespace Temperature
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            OnUpdateTicked(default, default);
-
             PlayerData.CurrentSeasonData = DataController.UpdateSeasonData(Game1.player.currentLocation.GetSeason().ToString(), Game1.getFarm().GetSeason().ToString());
             PlayerData.CurrentWeatherData = DataController.UpdateWeatherData(Game1.player.currentLocation.GetWeather().Weather);
             PlayerData.CurrentLocationData = DataController.UpdateLocationData(Game1.player.currentLocation.Name);
@@ -162,8 +146,6 @@ namespace Temperature
         }
 
         private void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)
-        {
-            NetController.OnMessageReceived(e);
-        }
+            => NetController.OnMessageReceived(e);
     }
 }
