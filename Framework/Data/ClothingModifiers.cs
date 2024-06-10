@@ -1,6 +1,6 @@
 namespace Temperature.Framework.Data
 {
-    public class ClothesModifiers
+    public class ClothingModifiers
     {
         public string Pattern { get; set; } = "match";
         public float HeatResistance { get; set; } = 0;

@@ -14,7 +14,7 @@ namespace Temperature.Framework.Controllers
         public static GenericData<EnvModifiers> Seasons { get; set; } = new();
         public static GenericData<EnvModifiers> Weather { get; set; } = new();
         public static GenericData<EnvModifiers> Locations { get; set; } = new();
-        public static GenericData<Dictionary<string, ClothesModifiers>> Clothes { get; set; } = new();
+        public static GenericData<Dictionary<string, ClothingModifiers>> Clothing { get; set; } = new();
         public static GenericData<ObjectModifiers> Objects { get; set; } = new();
         public static float ObjectsMaxEffectiveRange = 0;
         public static void LoadData()
@@ -24,7 +24,7 @@ namespace Temperature.Framework.Controllers
             Seasons.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.SeasonsDataAssetFileName));
             Weather.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.WeatherDataAssetFileName));
             Locations.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.LocationsDataAssetFileName));
-            Clothes.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.ClothesDataAssetFileName));
+            Clothing.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.ClothingDataAssetFileName));
             Objects.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.ObjectsDataAssetFileName));
 
             // Mod data
@@ -34,7 +34,7 @@ namespace Temperature.Framework.Controllers
                 Seasons.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.SeasonsDataAssetFileName));
                 Weather.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.WeatherDataAssetFileName));
                 Locations.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.LocationsDataAssetFileName));
-                Clothes.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.ClothesDataAssetFileName));
+                Clothing.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.ClothingDataAssetFileName));
                 Objects.LoadData(Path.Combine(pathPrefix, AssetHelper.DataConstants.ObjectsDataAssetFileName));
             }
 
@@ -45,24 +45,24 @@ namespace Temperature.Framework.Controllers
             }
         }
 
-        private static ClothesModifiers GetClothesData(string clothingName, string type = "")
+        private static ClothingModifiers GetClothingData(string clothingName, string type = "")
         {
             if (clothingName == null) return null;
             return type switch
             {
-                "Hat" => GetDataByIteration(clothingName, Clothes.Data.GetValueOrDefault(type)),
-                "Shirt" => GetDataByIteration(clothingName, Clothes.Data.GetValueOrDefault(type)),
-                "Pants" => GetDataByIteration(clothingName, Clothes.Data.GetValueOrDefault(type)),
-                "Boots" => GetDataByIteration(clothingName, Clothes.Data.GetValueOrDefault(type)),
+                "Hat" => GetDataByIteration(clothingName, Clothing.Data.GetValueOrDefault(type)),
+                "Shirt" => GetDataByIteration(clothingName, Clothing.Data.GetValueOrDefault(type)),
+                "Pants" => GetDataByIteration(clothingName, Clothing.Data.GetValueOrDefault(type)),
+                "Boots" => GetDataByIteration(clothingName, Clothing.Data.GetValueOrDefault(type)),
                 _ => null,
             };
         }
 
-        private static ClothesModifiers GetDataByIteration(string clothingName, Dictionary<string, ClothesModifiers> data)
+        private static ClothingModifiers GetDataByIteration(string clothingName, Dictionary<string, ClothingModifiers> data)
         {
-            LogHelper.Info($"clothingName {clothingName}");
+            // LogHelper.Info($"clothingName {clothingName}");
             if (clothingName == null) return null;
-            ClothesModifiers res = null;
+            ClothingModifiers res = null;
             foreach (var x in data)
             {
                 switch (x.Value.Pattern)
@@ -71,28 +71,28 @@ namespace Temperature.Framework.Controllers
                         if (clothingName.Equals(x.Key))
                         {
                             res = x.Value;
-                            LogHelper.Info($"match {x.Key}");
+                            // LogHelper.Info($"match {x.Key}");
                         }
                         break;
                     case "prefix":
                         if (clothingName.StartsWith(x.Key))
                         {
                             res = x.Value;
-                            LogHelper.Info($"prefix {x.Key}");
+                            // LogHelper.Info($"prefix {x.Key}");
                         }
                         break;
                     case "postfix":
                         if (clothingName.EndsWith(x.Key))
                         {
                             res = x.Value;
-                            LogHelper.Info($"postfix {x.Key}");
+                            // LogHelper.Info($"postfix {x.Key}");
                         }
                         break;
                     case "contain":
                         if (clothingName.Contains(x.Key))
                         {
                             res = x.Value;
-                            LogHelper.Info($"contain {x.Key}");
+                            // LogHelper.Info($"contain {x.Key}");
                         }
                         break;
                 }
@@ -100,36 +100,36 @@ namespace Temperature.Framework.Controllers
             return res;
         }
 
-        public static ClothesModifiers UpdateHatData(StardewValley.Objects.Hat hat)
+        public static ClothingModifiers UpdateHatData(StardewValley.Objects.Hat hat)
         {
             if (hat != null)
-                return GetClothesData(hat.Name, "Hat") ?? new ClothesModifiers();
+                return GetClothingData(hat.Name, "Hat") ?? new ClothingModifiers();
             else
-                return new ClothesModifiers();
+                return new ClothingModifiers();
         }
 
-        public static ClothesModifiers UpdateShirtData(StardewValley.Objects.Clothing shirt)
+        public static ClothingModifiers UpdateShirtData(StardewValley.Objects.Clothing shirt)
         {
             if (shirt != null)
-                return GetClothesData(shirt.Name, "Shirt") ?? new ClothesModifiers();
+                return GetClothingData(shirt.Name, "Shirt") ?? new ClothingModifiers();
             else
-                return new ClothesModifiers();
+                return new ClothingModifiers();
         }
 
-        public static ClothesModifiers UpdatePantsData(StardewValley.Objects.Clothing pants)
+        public static ClothingModifiers UpdatePantsData(StardewValley.Objects.Clothing pants)
         {
             if (pants != null)
-                return GetClothesData(pants.Name, "Pants") ?? new ClothesModifiers();
+                return GetClothingData(pants.Name, "Pants") ?? new ClothingModifiers();
             else
-                return new ClothesModifiers();
+                return new ClothingModifiers();
         }
 
-        public static ClothesModifiers UpdateBootsData(StardewValley.Objects.Boots boots)
+        public static ClothingModifiers UpdateBootsData(StardewValley.Objects.Boots boots)
         {
             if (boots != null)
-                return GetClothesData(boots.Name, "Boots") ?? new ClothesModifiers();
+                return GetClothingData(boots.Name, "Boots") ?? new ClothingModifiers();
             else
-                return new ClothesModifiers();
+                return new ClothingModifiers();
         }
 
         public static EnvModifiers UpdateSeasonData(string currentSeason, string farmSeason)

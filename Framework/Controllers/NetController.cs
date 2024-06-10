@@ -25,7 +25,7 @@ namespace Temperature.Framework.Controllers
                     DataController.Seasons.Data,
                     DataController.Weather.Data,
                     DataController.Locations.Data,
-                    DataController.Clothes.Data,
+                    DataController.Clothing.Data,
                     DataController.Objects.Data);
 
                 Helper.Data.WriteSaveData($"{player_id}", _playerData);
@@ -52,7 +52,7 @@ namespace Temperature.Framework.Controllers
                         DataController.Seasons.Data,
                         DataController.Weather.Data,
                         DataController.Locations.Data,
-                        DataController.Clothes.Data,
+                        DataController.Clothing.Data,
                         DataController.Objects.Data);
 
                     Helper.Data.WriteSaveData($"{farmer.UniqueMultiplayerID}", _playerData);
@@ -104,7 +104,7 @@ namespace Temperature.Framework.Controllers
                 DataController.Seasons.Data = _body.seasons;
                 DataController.Weather.Data = _body.weather;
                 DataController.Locations.Data = _body.locations;
-                DataController.Clothes.Data = _body.clothes;
+                DataController.Clothing.Data = _body.clothing;
                 DataController.Objects.Data = _body.objects;
 
                 LogHelper.Trace("Received important PlayerData from host.");
@@ -125,21 +125,21 @@ namespace Temperature.Framework.Controllers
         public Dictionary<string, EnvModifiers> seasons;
         public Dictionary<string, EnvModifiers> weather;
         public Dictionary<string, EnvModifiers> locations;
-        public Dictionary<string, Dictionary<string, ClothesModifiers>> clothes;
+        public Dictionary<string, Dictionary<string, ClothingModifiers>> clothing;
         public Dictionary<string, ObjectModifiers> objects;
 
         public SyncBody(PlayerData _playerData,
             Dictionary<string, EnvModifiers> _seasons,
             Dictionary<string, EnvModifiers> _weather,
             Dictionary<string, EnvModifiers> _locations,
-            Dictionary<string, Dictionary<string, ClothesModifiers>> _clothes,
+            Dictionary<string, Dictionary<string, ClothingModifiers>> _clothing,
             Dictionary<string, ObjectModifiers> _objects)
         {
             playerData = _playerData;
             seasons = _seasons;
             weather = _weather;
             locations = _locations;
-            clothes = _clothes;
+            clothing = _clothing;
             objects = _objects;
         }
     }

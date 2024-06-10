@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using StardewValley;
 using Temperature.Framework.Data;
 using Temperature.Framework.Misc;
 namespace Temperature.Framework.Controllers
 {
     public static class BodyTempController
     {
-        public static float Update(float bodyTemp, float envTemp, ClothesModifiers hatData, ClothesModifiers shirtData, ClothesModifiers pantsData, ClothesModifiers bootsData)
+        public static float Update(float bodyTemp, float envTemp, ClothingModifiers hatData, ClothingModifiers shirtData, ClothingModifiers pantsData, ClothingModifiers bootsData)
         {
             float resultTemp = 0;
             LogHelper.Debug($"hatData   {hatData.ColdResistance} {hatData.HeatResistance}");

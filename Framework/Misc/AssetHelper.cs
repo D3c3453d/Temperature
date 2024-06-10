@@ -35,7 +35,7 @@ namespace Temperature.Framework.Misc
 
             public const string BaseGameDataFolderName = "BaseGame";
 
-            public const string ClothesDataAssetFileName = "Clothes.json";
+            public const string ClothingDataAssetFileName = "Clothing.json";
             public const string LocationsDataAssetFileName = "Locations.json";
             public const string ObjectsDataAssetFileName = "Objects.json";
             public const string SeasonsDataAssetFileName = "Seasons.json";

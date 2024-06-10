@@ -9,9 +9,9 @@ namespace Temperature.Framework.Data
         public EnvModifiers CurrentSeasonData { get; set; } = new EnvModifiers(DefaultConsts.MaxSeasonTemp, DefaultConsts.MinSeasonTemp);
         public EnvModifiers CurrentWeatherData { get; set; } = new EnvModifiers();
         public EnvModifiers CurrentLocationData { get; set; } = new EnvModifiers(DefaultConsts.AbsoluteZero, DefaultConsts.AbsoluteZero, DefaultConsts.DayCycleScale, DefaultConsts.FluctuationScale);
-        public ClothesModifiers CurrentHatData { get; set; } = new ClothesModifiers();
-        public ClothesModifiers CurrentShirtData { get; set; } = new ClothesModifiers();
-        public ClothesModifiers CurrentPantsData { get; set; } = new ClothesModifiers();
-        public ClothesModifiers CurrentBootsData { get; set; } = new ClothesModifiers();
+        public ClothingModifiers CurrentHatData { get; set; } = new ClothingModifiers();
+        public ClothingModifiers CurrentShirtData { get; set; } = new ClothingModifiers();
+        public ClothingModifiers CurrentPantsData { get; set; } = new ClothingModifiers();
+        public ClothingModifiers CurrentBootsData { get; set; } = new ClothingModifiers();
     }
 }
