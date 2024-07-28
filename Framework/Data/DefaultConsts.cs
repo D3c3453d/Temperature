@@ -43,21 +43,9 @@ namespace Temperature.Framework.Data
 
         // BODY TEMP MODUL
         public const float BodyTemp = 0;
-
+        public const float BodyTempSlope = 0.1f;
         public const float MinComfyTemp = 16;
-
         public const float MaxComfyTemp = 28;
-
-        public const float HypothermiaBodyTempThreshold = 35;
-
-        public const float FrostbiteBodyTempThreshold = 30;
-
-        public const float HeatstrokeBodyTempThreshold = 38.5f;
-
-        public const float BurnBodyTempThreshold = 41;
-
-        public const float LowTemperatureSlope = 0.01f;
-
-        public const float HighTemperatureSlope = 0.01f;
+        public const float MinStep = 0.00001f;
     }
 }

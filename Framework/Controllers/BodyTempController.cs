@@ -5,6 +5,7 @@ namespace Temperature.Framework.Controllers
 {
     public static class BodyTempController
     {
+        private static readonly float defaultAvgComfyTemp = (DefaultConsts.MinComfyTemp + DefaultConsts.MaxComfyTemp) / 2;
         public static float Update(float bodyTemp, float envTemp, ClothingModifiers hatData, ClothingModifiers shirtData, ClothingModifiers pantsData, ClothingModifiers bootsData)
         {
             float resultTemp = 0;
@@ -15,21 +16,21 @@ namespace Temperature.Framework.Controllers
 
             float totalColdResistance = hatData.ColdResistance + shirtData.ColdResistance + pantsData.ColdResistance + bootsData.ColdResistance;
             float totalHeatResistance = hatData.HeatResistance + shirtData.HeatResistance + pantsData.HeatResistance + bootsData.HeatResistance;
-            float defaultAvgComfyTemp = (DefaultConsts.MinComfyTemp + DefaultConsts.MaxComfyTemp) / 2;
 
-            float minComfyTemp = defaultAvgComfyTemp + (DefaultConsts.MinComfyTemp - defaultAvgComfyTemp) * (totalColdResistance + 1);
-            float maxComfyTemp = defaultAvgComfyTemp + (DefaultConsts.MaxComfyTemp - defaultAvgComfyTemp) * (totalHeatResistance + 1);
+            float minComfyTemp = DefaultConsts.MinComfyTemp + (DefaultConsts.MinComfyTemp - defaultAvgComfyTemp) * totalColdResistance;
+            float maxComfyTemp = DefaultConsts.MaxComfyTemp + (DefaultConsts.MaxComfyTemp - defaultAvgComfyTemp) * totalHeatResistance;
 
             if (envTemp >= maxComfyTemp)
             {
-                resultTemp = 2 * MathF.Atan((envTemp - maxComfyTemp) * MathF.PI / 30) / MathF.PI;
+                resultTemp = CalcHelper.ArctanWithLeftRightLim(envTemp, -1, 1, maxComfyTemp, 30);
             }
             else if (envTemp <= minComfyTemp)
             {
-                resultTemp = 2 * MathF.Atan((envTemp - minComfyTemp) * MathF.PI / 30) / MathF.PI;
+                resultTemp = CalcHelper.ArctanWithLeftRightLim(envTemp, -1, 1, minComfyTemp, 30);
             }
 
-            bodyTemp += (resultTemp - bodyTemp) / 10;
+            float step = (resultTemp - bodyTemp) * DefaultConsts.BodyTempSlope;
+            bodyTemp += MathF.Abs(step) < DefaultConsts.MinStep ? (resultTemp - bodyTemp) : step;
             LogHelper.Alert($"minComfyTemp {minComfyTemp}");
             LogHelper.Alert($"maxComfyTemp {maxComfyTemp}");
             LogHelper.Alert($"resultBodyTemp {resultTemp}");
