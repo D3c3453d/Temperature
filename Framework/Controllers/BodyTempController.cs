@@ -22,11 +22,11 @@ namespace Temperature.Framework.Controllers
 
             if (envTemp >= maxComfyTemp)
             {
-                resultTemp = CalcHelper.ArctanWithLeftRightLim(envTemp, -1, 1, maxComfyTemp, 30);
+                resultTemp = CalcHelper.ArctanWithLeftRightLim(envTemp, DefaultConsts.MinBodyTemp, DefaultConsts.MaxBodyTemp, maxComfyTemp, 30);
             }
             else if (envTemp <= minComfyTemp)
             {
-                resultTemp = CalcHelper.ArctanWithLeftRightLim(envTemp, -1, 1, minComfyTemp, 30);
+                resultTemp = CalcHelper.ArctanWithLeftRightLim(envTemp, DefaultConsts.MinBodyTemp, DefaultConsts.MaxBodyTemp, minComfyTemp, 30);
             }
 
             float step = (resultTemp - bodyTemp) * DefaultConsts.BodyTempSlope;

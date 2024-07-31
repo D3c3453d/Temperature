@@ -43,6 +43,8 @@ namespace Temperature.Framework.Data
 
         // BODY TEMP MODUL
         public const float BodyTemp = 0;
+        public const float MinBodyTemp = -1;
+        public const float MaxBodyTemp = 1;
         public const float BodyTempSlope = 0.1f;
         public const float MinComfyTemp = 16;
         public const float MaxComfyTemp = 28;
