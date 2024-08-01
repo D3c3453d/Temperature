@@ -26,7 +26,7 @@ namespace Temperature.Framework.Misc
 
         public static bool CheckIfItemIsActive(StardewValley.Object obj, bool activeType = false)
         {
-            //check if the object is a machine for crafting (eg. Furnace, Charcoal Kiln)
+            // check if the object is a machine for crafting (eg. Furnace, Charcoal Kiln)
             if (activeType)
             {
                 if (obj.MinutesUntilReady > 0 && obj.heldObject.Value != null) return true;
@@ -34,7 +34,7 @@ namespace Temperature.Framework.Misc
             }
             else
             {
-                //if not a machine for crafting (assuming furniture), check if said furniture is active
+                // if not a machine for crafting (assuming furniture), check if said furniture is active
                 if (obj.IsOn) return true;
                 else return false;
             }

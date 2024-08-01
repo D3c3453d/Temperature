@@ -67,32 +67,32 @@ namespace Temperature.Framework.Controllers
             {
                 switch (x.Value.Pattern)
                 {
-                    case "match":
+                    case "Equals":
                         if (clothingName.Equals(x.Key))
                         {
                             res = x.Value;
-                            // LogHelper.Info($"match {x.Key}");
+                            // LogHelper.Info($"Equals {x.Key}");
                         }
                         break;
-                    case "prefix":
+                    case "StartsWith":
                         if (clothingName.StartsWith(x.Key))
                         {
                             res = x.Value;
-                            // LogHelper.Info($"prefix {x.Key}");
+                            // LogHelper.Info($"StartsWith {x.Key}");
                         }
                         break;
-                    case "postfix":
+                    case "EndsWith":
                         if (clothingName.EndsWith(x.Key))
                         {
                             res = x.Value;
-                            // LogHelper.Info($"postfix {x.Key}");
+                            // LogHelper.Info($"EndsWith {x.Key}");
                         }
                         break;
-                    case "contain":
+                    case "Contains":
                         if (clothingName.Contains(x.Key))
                         {
                             res = x.Value;
-                            // LogHelper.Info($"contain {x.Key}");
+                            // LogHelper.Info($"Contains {x.Key}");
                         }
                         break;
                 }

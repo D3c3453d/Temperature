@@ -2,31 +2,31 @@
     "Shirt": {
         "Brestplate":
         {
-            "Pattern": "postfix",
+            "Pattern": "EndsWith",
             "HeatResistance": -0.25,
             "ColdResistance": 0.25
         },
         "Shirt":
         {
-            "Pattern": "postfix",
+            "Pattern": "EndsWith",
             "HeatResistance": 0.25,
             "ColdResistance": -0.25
         },
         "Jacket":
         {
-            "Pattern": "postfix",
+            "Pattern": "EndsWith",
             "HeatResistance": 0,
             "ColdResistance": 0.5
         },
         "Overalls":
         {
-            "Pattern": "postfix",
+            "Pattern": "EndsWith",
             "HeatResistance": -0.25,
             "ColdResistance": 0.25
         },
         "Coat":
         {
-            "Pattern": "postfix",
+            "Pattern": "EndsWith",
             "HeatResistance": 0.25,
             "ColdResistance": 0.75
         }
@@ -34,19 +34,19 @@
     "Pants": {
         "Farmer Pants":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0,
             "ColdResistance": 0
         },
         "Shorts":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.5,
             "ColdResistance": -0.5
         },
         "Genie Pants":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": -0.5,
             "ColdResistance": 0.5
         }
@@ -54,43 +54,43 @@
     "Hat": {
         "Floppy Beanie":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": -0.25,
             "ColdResistance": 0.75
         },
         "Beanie":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": -0.25,
             "ColdResistance": 0.75
         },
         "Fishing Hat":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.5,
             "ColdResistance": 0
         },
         "Forager's Hat":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.5,
             "ColdResistance": 0
         },
         "Sou'wester":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.25,
             "ColdResistance": 0.75
         },
         "Cap":
         {
-            "Pattern": "postfix",
+            "Pattern": "EndsWith",
             "HeatResistance": 0.25,
             "ColdResistance": 0
         },
         "Hat":
         {
-            "Pattern": "postfix",
+            "Pattern": "EndsWith",
             "HeatResistance": 0.25,
             "ColdResistance": 0.25
         }
@@ -98,109 +98,109 @@
     "Boots": {
         "Sneaker":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.25,
             "ColdResistance": 0.5
         },
         "Rubber Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0,
             "ColdResistance": 0.75
         },
         "Leather Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.5,
             "ColdResistance": 0.5
         },
         "Work Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.5,
             "ColdResistance": 0.5
         },
         "Combat Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.75,
             "ColdResistance": 0.25
         },
         "Tundra Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0,
             "ColdResistance": 1.25
         },
         "Leprechaun Shoes":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.25,
             "ColdResistance": 0.25
         },
         "Thermal Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.75,
             "ColdResistance": 0.75
         },
         "Cowboy Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.75,
             "ColdResistance": 0.25
         },
         "Dark Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.5,
             "ColdResistance": 0.5
         },
         "Genie Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 1.0,
             "ColdResistance": 0.25
         },
         "Space Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.75,
             "ColdResistance": 0.75
         },
         "Emily's Magic Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 1.25,
             "ColdResistance": 1.25
         },
         "Cinderclown Shoes":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 2.5,
             "ColdResistance": 0
         },
         "Mermaid Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 0.5,
             "ColdResistance": 1.5
         },
         "Dragonscale Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 2.0,
             "ColdResistance": 2.0
         },
         "Crystal Shoes":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 2.0,
             "ColdResistance": 0
         },
         "Firewalker Boots":
         {
-            "Pattern": "match",
+            "Pattern": "Equals",
             "HeatResistance": 1.5,
             "ColdResistance": 0
         }

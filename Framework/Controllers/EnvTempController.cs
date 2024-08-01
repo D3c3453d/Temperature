@@ -161,7 +161,7 @@ namespace Temperature.Framework.Controllers
 
                 foreach (ObjectModifiers objectData in objectsData)
                 {
-                    //calculate indoor heating power base on core temp and range
+                    // calculate indoor heating power base on core temp and range
                     if (objectData.DeviceType == DefaultConsts.GeneralType)
                     {
                         float perfectAmbientPower = area * DefaultConsts.EnvTemp;
@@ -183,12 +183,14 @@ namespace Temperature.Framework.Controllers
             envTemp += CalcHelper.SinWithMinMax(hours, -dayCycleScale, dayCycleScale, DefaultConsts.DayCycleOffset, DefaultConsts.DayCycleStretch);
         }
 
+
+        /// <summary>Main function, that applies all environmental factors to environmental temperature</summary>
+        /// <remarks>Event: OnOneSecondUpdateTicked</remarks>
+        /// <returns>Environmental temperature</returns>
         public static float Update(EnvModifiers seasonData,
         EnvModifiers weatherData, EnvModifiers locationData, GameLocation location,
         int playerAbsoluteX, int playerAbsoluteY, int totalDays, int currentMineLevel)
         {
-            // main func
-            // OnSecondPassed
             float envTemp = 0;
             dayCycleScale = 0;
             fluctuationScale = 0;
@@ -234,6 +236,8 @@ namespace Temperature.Framework.Controllers
             return envTemp;
         }
 
+        /// <summary>Function, that changes fluctuation value</summary>
+        /// <remarks>Event: OnTimeChanged</remarks>
         public static void FluctuationUpdate()
         {
             // fluctuation
