@@ -240,8 +240,6 @@ namespace Temperature.Framework.Controllers
         /// <remarks>Event: OnTimeChanged</remarks>
         public static void FluctuationUpdate()
         {
-            // fluctuation
-            // OnTimeChanged
             fluctuation = (float)rand.NextDouble() * fluctuationScale - 0.5f * fluctuationScale;
         }
     }

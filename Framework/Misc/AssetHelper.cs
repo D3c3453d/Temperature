@@ -8,15 +8,11 @@ namespace Temperature.Framework.Misc
         private const string AssetFolderName = "Assets";
 
         public static string GetBarAssetsFolderPath()
-        {
-            return Path.Combine(ModEntry.Instance.Helper.DirectoryPath, AssetFolderName, BarsConstants.BarAssetsFolderName);
-        }
+            => Path.Combine(ModEntry.Instance.Helper.DirectoryPath, AssetFolderName, BarsConstants.BarAssetsFolderName);
 
         public static string GetDataAssetsFolderPath(bool toTheCustom = false)
-        {
-            return Path.Combine(ModEntry.Instance.Helper.DirectoryPath, AssetFolderName, DataConstants.DataAssetsFolderName,
+            => Path.Combine(ModEntry.Instance.Helper.DirectoryPath, AssetFolderName, DataConstants.DataAssetsFolderName,
                                 toTheCustom ? DataConstants.CustomDataFolderName : DataConstants.BaseGameDataFolderName);
-        }
 
         public static class BarsConstants
         {

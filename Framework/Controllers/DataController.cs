@@ -68,32 +68,16 @@ namespace Temperature.Framework.Controllers
                 switch (x.Value.Pattern)
                 {
                     case "Equals":
-                        if (clothingName.Equals(x.Key))
-                        {
-                            res = x.Value;
-                            // LogHelper.Info($"Equals {x.Key}");
-                        }
+                        if (clothingName.Equals(x.Key)) res = x.Value;
                         break;
                     case "StartsWith":
-                        if (clothingName.StartsWith(x.Key))
-                        {
-                            res = x.Value;
-                            // LogHelper.Info($"StartsWith {x.Key}");
-                        }
+                        if (clothingName.StartsWith(x.Key)) res = x.Value;
                         break;
                     case "EndsWith":
-                        if (clothingName.EndsWith(x.Key))
-                        {
-                            res = x.Value;
-                            // LogHelper.Info($"EndsWith {x.Key}");
-                        }
+                        if (clothingName.EndsWith(x.Key)) res = x.Value;
                         break;
                     case "Contains":
-                        if (clothingName.Contains(x.Key))
-                        {
-                            res = x.Value;
-                            // LogHelper.Info($"Contains {x.Key}");
-                        }
+                        if (clothingName.Contains(x.Key)) res = x.Value;
                         break;
                 }
             }
